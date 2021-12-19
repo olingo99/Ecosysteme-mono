@@ -11,6 +11,7 @@ namespace Ecosysteme_mono
         private EtreVivant[,] matrix;
         private List<EtreVivant> listEtre;
         private int sizeX, sizeY;
+        private int counter = 0;
 
 
 
@@ -36,9 +37,19 @@ namespace Ecosysteme_mono
             {
                 etre.GetPlay(matrix);
                 UpdateMatrix();
-                Console.WriteLine(this.ToString());
             }
         }
+
+        //public void Play()
+        //{
+        //    listEtre[counter].GetPlay(matrix);
+        //    UpdateMatrix();
+        //    counter++;
+        //    if (counter >= listEtre.Count)
+        //    {
+        //        counter = 0;
+        //    }
+        //}
 
         public void AddEtre(EtreVivant etre)
         {
