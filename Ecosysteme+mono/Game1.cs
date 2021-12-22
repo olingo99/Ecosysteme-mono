@@ -20,6 +20,7 @@ namespace Ecosysteme_mono
         private float dinoSpeed;
         private plateau plateau;
         private List<EtreVivant> ToDraw;
+        private float scale;
 
         public Game1(plateau plateau)
         {
@@ -29,14 +30,14 @@ namespace Ecosysteme_mono
             IsMouseVisible = true;
             this.plateau = plateau;
             this.ToDraw = new List<EtreVivant>();
-
+            scale = 0.05f;
         }
 
 
         protected override void Initialize()
         {
             _graphics.PreferredBackBufferWidth = 2500;  // set this value to the desired width of your window
-            _graphics.PreferredBackBufferHeight = 1500;   // set this value to the desired height of your window
+            _graphics.PreferredBackBufferHeight = 1300;   // set this value to the desired height of your window
             _graphics.ApplyChanges();
             ballPosition = new Vector2(_graphics.PreferredBackBufferWidth / 2, _graphics.PreferredBackBufferHeight / 2);
             ballSpeed = 100f;
@@ -101,18 +102,18 @@ namespace Ecosysteme_mono
             _spriteBatch.Begin();
 
             ToDraw.ForEach(etre => {
-                _spriteBatch.Draw(dinoTexture, new Vector2(etre.getPos(0) * 10, etre.getPos(1) * 10), null, Color.White, 0f, Vector2.Zero, 0.1f, SpriteEffects.None, 0f);
+                _spriteBatch.Draw(dinoTexture, new Vector2(etre.getPos(0) * 10, etre.getPos(1) * 10), null, Color.White, 0f, Vector2.Zero, scale, SpriteEffects.None, 0f);
                 //_spriteBatch.Draw(dinoTexture, new Vector2(etre.getPos(0) * 10, etre.getPos(1) * 10), null, Color.White, 0f, Vector2.Zero, 0.1f, SpriteEffects.None, 0f)
 
                 int length = etre.GetHp() * 10;
 
 
-                Texture2D rect = new Texture2D(_graphics.GraphicsDevice, length, 10);
+                Texture2D rect = new Texture2D(_graphics.GraphicsDevice, length, 5);
 
-                Color[] data = new Color[length * 10];
+                Color[] data = new Color[length * 5];
                 for (int i = 0; i < data.Length; ++i) data[i] = Color.Red;
                 rect.SetData(data);
-                double testval = (double)dinoTexture.Height * 0.1;
+                double testval = (double)dinoTexture.Height * scale;
                 double testval2 = (double)etre.getPos(1) * 10;
                 double a = testval + testval2;
                 Vector2 coor = new Vector2(etre.getPos(0) * 10, (float)a);

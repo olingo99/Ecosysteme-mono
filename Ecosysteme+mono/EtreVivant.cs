@@ -7,7 +7,7 @@ namespace Ecosysteme_mono
 {
     class EtreVivant
     {
-        private int posX, posY, hp, ep, epLossSpeed, speed;
+        private protected int posX, posY, hp, ep, epLossSpeed, speed;
         public EtreVivant(int posX, int posY, int hp, int ep, int epLossSpeed, int speed)
         {
             this.posX = posX;
@@ -37,27 +37,9 @@ namespace Ecosysteme_mono
             return this.speed;
         }
 
-        public void GetPlay(EtreVivant[,] matrix)
+        public virtual void GetPlay(EtreVivant[,] matrix)
         {
-            Random rnd = new Random();
-            posX += rnd.Next(-10, 11);
-            posY += rnd.Next(-10, 11);
-            if (posX >= matrix.GetLength(0))
-            {
-                posX = matrix.GetLength(0) - 1;
-            }
-            else if (posX < 0)
-            {
-                posX = 0;
-            }
-            if (posY >= matrix.GetLength(1))
-            {
-                posY = matrix.GetLength(1) - 1;
-            }
-            else if (posY < 0)
-            {
-                posY = 0;
-            }
+            
         }
 
     }
