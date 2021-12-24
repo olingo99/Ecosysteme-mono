@@ -8,28 +8,35 @@ namespace Ecosysteme_mono
     class plateau
     {
         //nouvelle branches
-        private EtreVivant[,] matrix;
+        private Entite[,] matrix;
         private List<EtreVivant> listEtre;
+        private List<Nourriture> listNourriture;
         private int sizeX, sizeY;
         private int counter = 0;
 
 
 
-        public plateau(int sizeX, int sizeY, List<EtreVivant> list)
+        public plateau(int sizeX, int sizeY, List<EtreVivant> list, List<Nourriture> listNourriture)
         {
             this.sizeX = sizeX;
             this.sizeY = sizeY;
             this.matrix = new EtreVivant[sizeX, sizeY];
             this.listEtre = SortBySpeed(list);
+            this.listNourriture = listNourriture;
+            UpdateMatrix();
         }
         private List<EtreVivant> SortBySpeed(List<EtreVivant> list)
         {
             return list.OrderByDescending(x => x.GetSpeed()).ToList();
         }
 
-        public List<EtreVivant> GetList()
+        public List<EtreVivant> GetListEtre()
         {
             return listEtre;
+        }
+        public List<Nourriture> GetListNourriture()
+        {
+            return listNourriture;
         }
         public void Play()
         {
@@ -55,20 +62,35 @@ namespace Ecosysteme_mono
         {
             listEtre.Add(etre);
             listEtre = SortBySpeed(listEtre);
+            UpdateMatrix();
+        }
+        public void AddNourriture(Nourriture Nourriture)
+        {
+            listNourriture.Add(Nourriture);
+            UpdateMatrix();
         }
 
         public void DeleteEtre(EtreVivant etre)
         {
             listEtre.Remove(etre);
+            UpdateMatrix();
+        }
+        public void DeleteNourriture(Nourriture Nourriture)
+        {
+            listNourriture.Remove(Nourriture);
+            UpdateMatrix();
         }
 
         private void UpdateMatrix()
         {
-            this.matrix = new EtreVivant[sizeX, sizeY];
+            this.matrix = new Entite[sizeX, sizeY];
             foreach (EtreVivant etre in listEtre)
             {
-
                 matrix[etre.getPos(0), etre.getPos(1)] = etre;
+            }
+            foreach (Nourriture Nourriture in listNourriture)
+            {
+                matrix[Nourriture.getPos(0), Nourriture.getPos(1)] = Nourriture;
             }
         }
 
