@@ -12,13 +12,10 @@ namespace Ecosysteme_mono
     {
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
-        private Texture2D dinoTexture, HealthBar;
-        private Vector2 ballPosition;
-        private Vector2 dinoPos;
-        private float ballSpeed;
-        private float dinoSpeed;
+        private Texture2D HealthBar;
         private plateau plateau;
-        private List<EtreVivant> ToDrawEtre;
+        private List<Plante> ToDrawPlante;
+        private List<Animal> ToDrawAnimal;
         private List<Nourriture> ToDrawNourriture;
         private float scale;
         private HashSet<string> Textures;
@@ -31,8 +28,9 @@ namespace Ecosysteme_mono
             Content.RootDirectory = "Content";
             IsMouseVisible = true;
             this.plateau = plateau;
-            this.ToDrawEtre = plateau.GetListEtre();
-            this.ToDrawNourriture = plateau.GetListNourriture();
+            ToDrawAnimal = plateau.GetListAnimal();
+            ToDrawNourriture = plateau.GetListNourriture();
+            ToDrawPlante = plateau.GetListPlante();
             Textures = new HashSet<string>();
             TexturesDict = new Dictionary<string, Texture2D>();
             scale = 0.05f;
@@ -44,10 +42,6 @@ namespace Ecosysteme_mono
             _graphics.PreferredBackBufferWidth = 2500;  // set this value to the desired width of your window
             _graphics.PreferredBackBufferHeight = 1300;   // set this value to the desired height of your window
             _graphics.ApplyChanges();
-            ballPosition = new Vector2(_graphics.PreferredBackBufferWidth / 2, _graphics.PreferredBackBufferHeight / 2);
-            ballSpeed = 100f;
-            dinoPos = new Vector2(_graphics.PreferredBackBufferWidth / 2, _graphics.PreferredBackBufferHeight / 2);
-            dinoSpeed = 200f;
             // TODO: Add your initialization logic here
 
             base.Initialize();
@@ -61,14 +55,16 @@ namespace Ecosysteme_mono
 
             HealthBar = Content.Load<Texture2D>("healthbar");
 
-            ToDrawEtre.ForEach(etre =>
+            ToDrawAnimal.ForEach(etre =>
             {
                 Textures.Add(etre.GetTexture());
             });
-            ToDrawNourriture.ForEach(Nourriture =>
+            ToDrawPlante.ForEach(etre =>
             {
-                Textures.Add(Nourriture.GetTexture());
+                Textures.Add(etre.GetTexture());
             });
+            Textures.Add("viande");
+            Textures.Add("dechetOrga");
 
             foreach(string texture in Textures)
             {
@@ -85,7 +81,8 @@ namespace Ecosysteme_mono
 
 
             // TODO: Add your update logic here
-            ToDrawEtre = plateau.GetListEtre();
+            ToDrawPlante = plateau.GetListPlante();
+            ToDrawAnimal = plateau.GetListAnimal();
             ToDrawNourriture = plateau.GetListNourriture();
             plateau.Play();
 
@@ -94,24 +91,31 @@ namespace Ecosysteme_mono
 
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.Clear(Color.CornflowerBlue);
+            System.Threading.Thread.Sleep(2000);
+            GraphicsDevice.Clear(Color.SandyBrown);
 
             _spriteBatch.Begin();
 
-            ToDrawEtre.ForEach(etre => {
+            ToDrawAnimal.ForEach(etre => {
                 _spriteBatch.Draw(TexturesDict[etre.GetTexture()], new Vector2(etre.getPos(0) * 10, etre.getPos(1) * 10), Color.White);
 
-                _spriteBatch.Draw(HealthBar, new Rectangle(etre.getPos(0) * 10, TexturesDict[etre.GetTexture()].Height+etre.getPos(1) * 10, 50, 5), Color.Red);
-                });
+                _spriteBatch.Draw(HealthBar, new Rectangle(etre.getPos(0) * 10, TexturesDict[etre.GetTexture()].Height+etre.getPos(1) * 10, etre.GetCurrentHp(), 5), Color.Red);
+            });
 
                 
 
-                ToDrawNourriture.ForEach(nourriture =>
-                {
-                    _spriteBatch.Draw(TexturesDict[nourriture.GetTexture()], new Vector2(nourriture.getPos(0) * 10, nourriture.getPos(1) * 10), null, Color.White, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0f);
-                });
+            
 
-                _spriteBatch.End();
+            ToDrawPlante.ForEach(plante =>
+            {
+                _spriteBatch.Draw(TexturesDict[plante.GetTexture()], new Vector2(plante.getPos(0) * 10, plante.getPos(1) * 10), Color.White);
+            });
+            ToDrawNourriture.ForEach(nourriture =>
+            {
+                _spriteBatch.Draw(TexturesDict[nourriture.GetTexture()], new Vector2(nourriture.getPos(0) * 10, nourriture.getPos(1) * 10), Color.White);
+            });
+
+            _spriteBatch.End();
 
                 // TODO: Add your drawing code here
 

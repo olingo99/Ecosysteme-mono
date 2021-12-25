@@ -7,15 +7,15 @@ namespace Ecosysteme_mono
 {
     class EtreVivant:Entite
     {
-        private protected int hp, ep, epLossSpeed, speed, maxHp;
-        public EtreVivant(int posX, int posY, int hp, int ep, int epLossSpeed, int speed):base(posX, posY)
+        private protected int hp, ep, epLossSpeed, maxHp, maxEp;
+        public EtreVivant(int posX, int posY, int hp, int ep, int epLossSpeed):base(posX, posY)
         {
 
             this.hp = hp;
-            this.ep = ep;
+            this.ep = (int)0.5 * ep;
             this.epLossSpeed = epLossSpeed;
-            this.speed = speed;
-            this.maxHp = hp;
+            maxHp = hp;
+            maxEp = ep;
         }
 
         public int GetCurrentHp()
@@ -31,12 +31,9 @@ namespace Ecosysteme_mono
         {
             return " E";
         }
-        public int GetSpeed()
-        {
-            return this.speed;
-        }
+        
 
-        public virtual void GetPlay(Entite[,] matrix)
+        public virtual List<KeyValuePair<string,Entite>> GetPlay(Entite[,] matrix, plateau plateau)
         {
             Random rnd = new Random();
             posX += rnd.Next(-10, 11);
@@ -57,11 +54,9 @@ namespace Ecosysteme_mono
             {
                 posY = 0;
             }
+            return new List<KeyValuePair<string, Entite>>();
         }
 
-        public override string GetTexture()
-        {
-            return "dino";
-        }
+        
     }
 }

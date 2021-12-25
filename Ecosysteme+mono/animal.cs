@@ -6,22 +6,69 @@ namespace Ecosysteme_mono
 {
     class Animal : EtreVivant
     {
-        int periodeGestation, rayonContact, rayonVision;
-        char sex;
-        string type;
-        List<Action> Moves;
+        private int periodeGestation, rayonContact, rayonVision, speed;
+        private char sex;
+        private string type, espece;
+        private List<Action> Moves;
 
-        public Animal(int posX, int posY, int hp, int ep, int epLossSpeed,int speed, char sex, int periodeGestation, int rayonContact, int rayonVision,string type):base(posX, posY, hp, ep, epLossSpeed,speed) 
+        public Animal(int posX, int posY, int hp, int ep, int epLossSpeed,int speed, char sex, int periodeGestation, int rayonContact, int rayonVision,string type, string espece):base(posX, posY, hp, ep, epLossSpeed) 
         {
             this.periodeGestation = periodeGestation;
             this.rayonContact = rayonContact;
             this.rayonVision = rayonVision;
             this.sex = sex;
             this.type = type;
+            this.speed = speed;
+            this.espece = espece;
+
+            //temptest
+            ep = maxEp;
            
         }
 
-        public override void GetPlay(Entite[,] matrix)
+        public override List<KeyValuePair<string, Entite>> GetPlay(Entite[,] matrix, plateau plateau)
+        {
+            List<KeyValuePair<string, Entite>> res = new List<KeyValuePair<string, Entite>>();
+            
+            if(true)
+            {
+                SeekMate(matrix);
+            }
+            else
+            {
+                MoveRandom(matrix);
+            }
+            return res;
+        }
+
+        private void SeekMate(Entite[,] matrix)
+        {
+            for (int i = Math.Max(posX - (rayonVision / 2), 0); i <= Math.Min(posX + (rayonVision / 2), matrix.GetLength(0)); i++)
+            {
+                for (int j = Math.Max(posY - (rayonVision / 2), 0); j <= Math.Min(posY + (rayonVision / 2), matrix.GetLength(1)); j++)
+                {
+                    if (matrix[i, j] is Animal)
+                    {
+                        Animal animal = (Animal) matrix[i, j];
+                        if (animal.GetEspece() == espece && animal.GetSex()!=sex)
+                        {
+                            if (Math.Sqrt((Math.Pow(animal.getPos(0) - posX, 2) + Math.Pow(animal.getPos(1) - posY, 2)))<=rayonVision)//pas de && dans le if du dessus pour eviter de faire le calcul pour rien
+                            {
+                                MoveToward(animal.getPos(0), animal.getPos(1));
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        private void MoveToward(int toPosX, int toPosY)
+        {
+            posX += Math.Min(speed, toPosX - posX);
+            posY += Math.Min(speed, toPosY - posY);
+        }
+
+        private void MoveRandom(Entite[,] matrix)
         {
             Random rnd = new Random();
             posX += rnd.Next(-10, 11);
@@ -42,6 +89,25 @@ namespace Ecosysteme_mono
             {
                 posY = 0;
             }
+        }
+        public int GetSpeed()
+        {
+            return this.speed;
+        }
+
+        public override string GetTexture()
+        {
+            return "dino";
+        }
+
+        public string GetEspece()
+        {
+            return espece;
+        }
+
+        public char GetSex()
+        {
+            return sex;
         }
 
         //private (string, int) CheckEating(Entite[,] matrix)
@@ -68,6 +134,6 @@ namespace Ecosysteme_mono
         //    possibleMoves.Add(key, value);
         //}
 
-        
+
     }
 }

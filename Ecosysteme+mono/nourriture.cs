@@ -15,7 +15,7 @@ namespace Ecosysteme_mono
         {
             this.taille = taille;
             this.type = type;
-            decayTime = 10;
+            decayTime = 100;
         }
 
         
@@ -30,10 +30,13 @@ namespace Ecosysteme_mono
             }
         }
 
+        public new string GetType()
+        {
+            return type;
+        }
         public override string GetTexture()
         {
-            return base.GetTexture();
+            return type;
         }
-
     }
 }

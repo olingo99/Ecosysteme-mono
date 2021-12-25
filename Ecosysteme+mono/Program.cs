@@ -8,10 +8,12 @@ namespace Ecosysteme_mono
         [STAThread]
         static void Main()
         {
-            EtreVivant test = new EtreVivant(3, 3, 3, 3, 3, 3);
-            EtreVivant test2 = new EtreVivant(9, 9, 9, 9, 3, 9);
-            EtreVivant test3 = new EtreVivant(1, 1, 1, 1, 1, 1);
-            List<EtreVivant> l = new List<EtreVivant>();
+            
+            Animal test = new Animal(3,3,10,2,2,10,'h',5,5,15,"herbivore","dino");
+            Animal test2 = new Animal(9, 9, 10, 2, 2, 10, 'f', 5, 5, 15, "herbivore","dino");
+            Animal test3 = new Animal(15, 15, 10, 2, 2, 10, 'f', 5, 5, 15, "herbivore","dino");
+            List<Animal> l = new List<Animal>();
+
             //for (int i = 0; i < 22; i++)
             //{
             //    l.Add(new EtreVivant(i, i, 1, 1, 1, 1));
@@ -20,8 +22,12 @@ namespace Ecosysteme_mono
             l.Add(test2);
             l.Add(test3);
             List<Nourriture> ln = new List<Nourriture>();
-            ln.Add(new Nourriture(50, 50, 2, "dechet orga"));
-            plateau plat = new plateau(250, 150, l,ln);
+            List<Plante> lp = new List<Plante>();
+            ln.Add(new Nourriture(0, 0, 1, "dechetOrga"));
+            lp.Add(new Plante(200, 110, 5, 2, 2, 15, 15));
+            ln.Add(new Nourriture(0, 0, 2, "dechetOrga"));
+            ln.Add(new Nourriture(0, 0, 2, "viande"));
+            plateau plat = new plateau(250, 150, l,lp,ln);
             var game = new Game1(plat);
             game.Run();
         }
