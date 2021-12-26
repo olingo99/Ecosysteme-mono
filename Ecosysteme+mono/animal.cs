@@ -10,6 +10,7 @@ namespace Ecosysteme_mono
         private char sex;
         private string type, espece;
         private List<Action> Moves;
+        private bool pregnant;
 
         public Animal(int posX, int posY, int hp, int ep, int epLossSpeed,int speed, char sex, int periodeGestation, int rayonContact, int rayonVision,string type, string espece):base(posX, posY, hp, ep, epLossSpeed) 
         {
@@ -20,17 +21,19 @@ namespace Ecosysteme_mono
             this.type = type;
             this.speed = speed;
             this.espece = espece;
+            this.pregnant = false;
 
             //temptest
-            ep = maxEp;
+            
            
         }
 
         public override List<KeyValuePair<string, Entite>> GetPlay(Entite[,] matrix, plateau plateau)
         {
             List<KeyValuePair<string, Entite>> res = new List<KeyValuePair<string, Entite>>();
-            
-            if(true)
+
+            double test = 0.8 * maxEp;
+            if (EnForme())
             {
                 SeekMate(matrix);
             }
@@ -38,30 +41,76 @@ namespace Ecosysteme_mono
             {
                 MoveRandom(matrix);
             }
+            base.Checkpos(matrix);
             return res;
         }
 
         private void SeekMate(Entite[,] matrix)
         {
-            for (int i = Math.Max(posX - (rayonVision / 2), 0); i <= Math.Min(posX + (rayonVision / 2), matrix.GetLength(0)); i++)
+            List<Tuple<int, int>> possibleMates = new List<Tuple<int, int>>();
+            for (int i = Math.Max(posX - (rayonVision / 2), 0); i <= Math.Min(posX + (rayonVision / 2), matrix.GetLength(0)-1); i++)
             {
-                for (int j = Math.Max(posY - (rayonVision / 2), 0); j <= Math.Min(posY + (rayonVision / 2), matrix.GetLength(1)); j++)
+                for (int j = Math.Max(posY - (rayonVision / 2), 0); j <= Math.Min(posY + (rayonVision / 2), matrix.GetLength(1)-1); j++)
                 {
-                    if (matrix[i, j] is Animal)
+                    if (matrix[i, j] is Animal && matrix[i,j]!=this)
                     {
                         Animal animal = (Animal) matrix[i, j];
                         if (animal.GetEspece() == espece && animal.GetSex()!=sex)
                         {
-                            if (Math.Sqrt((Math.Pow(animal.getPos(0) - posX, 2) + Math.Pow(animal.getPos(1) - posY, 2)))<=rayonVision)//pas de && dans le if du dessus pour eviter de faire le calcul pour rien
+                            double distance = Math.Sqrt((Math.Pow(animal.getPos(0) - posX, 2) + Math.Pow(animal.getPos(1) - posY, 2)));
+                            if (distance<=rayonVision && distance >= rayonContact)//pas de && dans le if du dessus pour eviter de faire le calcul pour rien
                             {
+                                //possibleMates.Add(new Tuple<int, int>(animal.getPos(0), animal.getPos(1)));
                                 MoveToward(animal.getPos(0), animal.getPos(1));
+                                //return;
                             }
+                            else if(distance <= rayonVision && distance <= rayonContact && animal.EnForme())
+                            {
+                                if(sex == 'f')
+                                {
+                                    Impregnate();
+                                    return;
+                                }
+                                else
+                                {
+                                    animal.Impregnate();
+                                    return;
+                                }
+                            }
+                            //else
+                            //{
+                            //    MoveRandom(matrix);
+                            //}
                         }
                     }
                 }
             }
+            //if (possibleMates.Count == 0)
+            //{
+            //    MoveRandom(matrix);
+            //}
+            //else
+            //{
+            //    MoveToward(possibleMates[0]);
+            //}
+            MoveRandom(matrix);
         }
 
+        public bool EnForme()
+        {
+            return ep >= 0.8 * maxEp;
+        }
+
+        public void Impregnate()
+        {
+            pregnant = true;
+            ep = 0;
+        }
+
+        private void MoveToward(Tuple<int, int> toPos)
+        {
+            MoveToward(toPos.Item1, toPos.Item2);
+        }
         private void MoveToward(int toPosX, int toPosY)
         {
             posX += Math.Min(speed, toPosX - posX);
@@ -108,6 +157,11 @@ namespace Ecosysteme_mono
         public char GetSex()
         {
             return sex;
+        }
+
+        private void Reproduce()
+        {
+            return;
         }
 
         //private (string, int) CheckEating(Entite[,] matrix)

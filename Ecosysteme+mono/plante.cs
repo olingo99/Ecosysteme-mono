@@ -65,7 +65,7 @@ namespace Ecosysteme_mono
             int newPosX = posX + rnd.Next(-rayonSemis, rayonSemis + 1);
 
             int newPosY = posY + rnd.Next(-rayonSemis, rayonSemis + 1);
-            while (Math.Sqrt((Math.Pow(newPosX - posX, 2) + Math.Pow(newPosY - posY, 2))) > rayonSemis)
+            while (Math.Sqrt((Math.Pow(newPosX - posX, 2) + Math.Pow(newPosY - posY, 2))) > rayonSemis && (!(matrix[newPosX, newPosY] is Entite)))
             {
                 newPosX = posX + rnd.Next(-rayonSemis, rayonSemis + 1);
 

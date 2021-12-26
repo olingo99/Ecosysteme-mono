@@ -91,7 +91,7 @@ namespace Ecosysteme_mono
 
         protected override void Draw(GameTime gameTime)
         {
-            System.Threading.Thread.Sleep(2000);
+            //System.Threading.Thread.Sleep(1000);
             GraphicsDevice.Clear(Color.SandyBrown);
 
             _spriteBatch.Begin();

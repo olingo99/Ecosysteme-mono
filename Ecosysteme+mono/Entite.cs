@@ -23,6 +23,16 @@ namespace Ecosysteme_mono
             return "default";
         }
 
+        public void Checkpos(Entite[,] matrix)
+        {
+            Random rnd = new Random();
+            while(matrix[posX,posY] is Entite && matrix[posX, posY] != this)
+            {
+                posX = posX > matrix.GetLength(0)/2 ? posX-1 : posX+1;
+                posY = posY > matrix.GetLength(1)/2 ? posY - 1 : posY + 1;
+            }
+        }
+
 
     }
 

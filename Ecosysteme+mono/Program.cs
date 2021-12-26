@@ -9,9 +9,11 @@ namespace Ecosysteme_mono
         static void Main()
         {
             
-            Animal test = new Animal(3,3,10,2,2,10,'h',5,5,15,"herbivore","dino");
-            Animal test2 = new Animal(9, 9, 10, 2, 2, 10, 'f', 5, 5, 15, "herbivore","dino");
-            Animal test3 = new Animal(15, 15, 10, 2, 2, 10, 'f', 5, 5, 15, "herbivore","dino");
+            Animal test = new Animal(25,25,100,10,2,10,'h',5,10,20,"herbivore","dino");
+            Animal test2 = new Animal(26, 26, 10, 10, 2, 10, 'f', 5, 10, 20, "herbivore","dino");
+            test.ep = test.maxEp;
+            test2.ep = test2.maxEp;
+            //Animal test3 = new Animal(15, 15, 10, 2, 2, 10, 'f', 5, 5, 15, "herbivore","dino");
             List<Animal> l = new List<Animal>();
 
             //for (int i = 0; i < 22; i++)
@@ -20,10 +22,10 @@ namespace Ecosysteme_mono
             //}
             l.Add(test);
             l.Add(test2);
-            l.Add(test3);
+            //l.Add(test3);
             List<Nourriture> ln = new List<Nourriture>();
             List<Plante> lp = new List<Plante>();
-            ln.Add(new Nourriture(0, 0, 1, "dechetOrga"));
+            ln.Add(new Nourriture(201, 111, 1, "dechetOrga"));
             lp.Add(new Plante(200, 110, 5, 2, 2, 15, 15));
             ln.Add(new Nourriture(0, 0, 2, "dechetOrga"));
             ln.Add(new Nourriture(0, 0, 2, "viande"));

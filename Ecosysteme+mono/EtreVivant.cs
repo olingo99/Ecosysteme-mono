@@ -7,7 +7,7 @@ namespace Ecosysteme_mono
 {
     class EtreVivant:Entite
     {
-        private protected int hp, ep, epLossSpeed, maxHp, maxEp;
+        public int hp, ep, epLossSpeed, maxHp, maxEp;
         public EtreVivant(int posX, int posY, int hp, int ep, int epLossSpeed):base(posX, posY)
         {
 
@@ -31,6 +31,8 @@ namespace Ecosysteme_mono
         {
             return " E";
         }
+
+
         
 
         public virtual List<KeyValuePair<string,Entite>> GetPlay(Entite[,] matrix, plateau plateau)
