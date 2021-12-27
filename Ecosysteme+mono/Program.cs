@@ -10,7 +10,7 @@ namespace Ecosysteme_mono
         {
             
             Animal test = new Animal(25,25,100,10,2,10,'h',5,10,20,"herbivore","dino");
-            Animal test2 = new Animal(26, 26, 10, 10, 2, 10, 'f', 5, 10, 20, "herbivore","dino");
+            Animal test2 = new Animal(26, 26, 10, 10, 2, 10, 'f', 205, 10, 20, "herbivore","dino");
             test.ep = test.maxEp;
             test2.ep = test2.maxEp;
             //Animal test3 = new Animal(15, 15, 10, 2, 2, 10, 'f', 5, 5, 15, "herbivore","dino");

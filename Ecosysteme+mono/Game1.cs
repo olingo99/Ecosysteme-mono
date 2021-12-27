@@ -90,13 +90,14 @@ namespace Ecosysteme_mono
             ToDrawAnimal = plateau.GetListAnimal();
             ToDrawNourriture = plateau.GetListNourriture();
             plateau.Play();
+            
 
             base.Update(gameTime);
         }
 
         protected override void Draw(GameTime gameTime)
         {
-            //System.Threading.Thread.Sleep(1000);
+            //System.Threading.Thread.Sleep(250);
             GraphicsDevice.Clear(Color.SandyBrown);
 
             _spriteBatch.Begin();
@@ -130,6 +131,7 @@ namespace Ecosysteme_mono
                 // TODO: Add your drawing code here
 
                 base.Draw(gameTime);
-            }
+            
+        }
     }
 }

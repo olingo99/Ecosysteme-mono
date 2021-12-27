@@ -33,7 +33,11 @@ namespace Ecosysteme_mono
             List<KeyValuePair<string, Entite>> res = new List<KeyValuePair<string, Entite>>();
 
             double test = 0.8 * maxEp;
-            if (EnForme())
+            if(IsPregnant() && tempsRestantNaissance == 0)
+            {
+                res.Add(new KeyValuePair<string, Entite>("add",Naissance(matrix)));
+            }
+            else if (EnForme())
             {
                 SeekMate(matrix);
             }
@@ -42,6 +46,12 @@ namespace Ecosysteme_mono
                 MoveRandom(matrix);
             }
             base.Checkpos(matrix);
+
+            ep -= epLossSpeed;
+            if (IsPregnant())
+            {
+                tempsRestantNaissance--;
+            }
             return res;
         }
 
@@ -55,14 +65,12 @@ namespace Ecosysteme_mono
                     if (matrix[i, j] is Animal && matrix[i,j]!=this)
                     {
                         Animal animal = (Animal) matrix[i, j];
-                        if (animal.GetEspece() == espece && animal.GetSex()!=sex)
+                        if (animal.GetEspece() == espece && animal.GetSex()!=sex && !(animal.IsPregnant()))
                         {
                             double distance = Math.Sqrt((Math.Pow(animal.getPos(0) - posX, 2) + Math.Pow(animal.getPos(1) - posY, 2)));
                             if (distance<=rayonVision && distance >= rayonContact)//pas de && dans le if du dessus pour eviter de faire le calcul pour rien
                             {
-                                //possibleMates.Add(new Tuple<int, int>(animal.getPos(0), animal.getPos(1)));
                                 MoveToward(animal.getPos(0), animal.getPos(1));
-                                //return;
                             }
                             else if(distance <= rayonVision && distance <= rayonContact && animal.EnForme())
                             {
@@ -77,25 +85,23 @@ namespace Ecosysteme_mono
                                     return;
                                 }
                             }
-                            //else
-                            //{
-                            //    MoveRandom(matrix);
-                            //}
                         }
                     }
                 }
             }
-            //if (possibleMates.Count == 0)
-            //{
-            //    MoveRandom(matrix);
-            //}
-            //else
-            //{
-            //    MoveToward(possibleMates[0]);
-            //}
             MoveRandom(matrix);
         }
 
+
+        private Animal Naissance(Entite[,] matrix)
+        {
+            Random rnd = new Random();
+            string newSex = "hf";
+            pregnant = false;
+            Animal newAnimal = new Animal(posX, posY, hp, ep, epLossSpeed, speed,(char) newSex[rnd.Next(0,2)], periodeGestation, rayonContact, rayonVision, type, espece);
+            newAnimal.Checkpos(matrix);
+            return newAnimal;
+        }
         public bool EnForme()
         {
             return ep >= 0.8 * maxEp;
@@ -104,7 +110,8 @@ namespace Ecosysteme_mono
         public void Impregnate()
         {
             pregnant = true;
-            ep = 0;
+            ep = (int)0.1*maxEp;
+            tempsRestantNaissance = periodeGestation;
         }
 
         private void MoveToward(Tuple<int, int> toPos)
@@ -120,8 +127,8 @@ namespace Ecosysteme_mono
         private void MoveRandom(Entite[,] matrix)
         {
             Random rnd = new Random();
-            posX += rnd.Next(-10, 11);
-            posY += rnd.Next(-10, 11);
+            posX += rnd.Next(-1, 2);
+            posY += rnd.Next(-1, 2);
             if (posX >= matrix.GetLength(0))
             {
                 posX = matrix.GetLength(0) - 1;
@@ -174,7 +181,7 @@ namespace Ecosysteme_mono
             //pas de switch case car pas possible de comparaison >/< en c# 8.0
             if (tempsRestantNaissance < 0.3 * periodeGestation)
             {
-                return "emptyheart";
+                return "fullheart";
             }
             else if (tempsRestantNaissance < 0.8* periodeGestation)
             {
@@ -182,7 +189,7 @@ namespace Ecosysteme_mono
             }
             else
             {
-                return "fullheart";
+                return "emptyheart";
             }
         }
 
