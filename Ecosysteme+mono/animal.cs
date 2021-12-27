@@ -6,7 +6,7 @@ namespace Ecosysteme_mono
 {
     class Animal : EtreVivant
     {
-        private int periodeGestation, rayonContact, rayonVision, speed;
+        private int periodeGestation, rayonContact, rayonVision, speed, tempsRestantNaissance;
         private char sex;
         private string type, espece;
         private List<Action> Moves;
@@ -162,6 +162,28 @@ namespace Ecosysteme_mono
         private void Reproduce()
         {
             return;
+        }
+
+        public bool IsPregnant()
+        {
+            return pregnant;
+        }
+
+        public string GetPregnancyStatus()
+        {
+            //pas de switch case car pas possible de comparaison >/< en c# 8.0
+            if (tempsRestantNaissance < 0.3 * periodeGestation)
+            {
+                return "emptyheart";
+            }
+            else if (tempsRestantNaissance < 0.8* periodeGestation)
+            {
+                return "halfheart";
+            }
+            else
+            {
+                return "fullheart";
+            }
         }
 
         //private (string, int) CheckEating(Entite[,] matrix)

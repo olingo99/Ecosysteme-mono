@@ -12,7 +12,7 @@ namespace Ecosysteme_mono
     {
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
-        private Texture2D HealthBar;
+        private Texture2D HealthBar, EnergyBar;
         private plateau plateau;
         private List<Plante> ToDrawPlante;
         private List<Animal> ToDrawAnimal;
@@ -54,6 +54,7 @@ namespace Ecosysteme_mono
             // TODO: use this.Content to load your game content here
 
             HealthBar = Content.Load<Texture2D>("healthbar");
+            EnergyBar = Content.Load<Texture2D>("energybar");
 
             ToDrawAnimal.ForEach(etre =>
             {
@@ -63,6 +64,10 @@ namespace Ecosysteme_mono
             {
                 Textures.Add(etre.GetTexture());
             });
+
+            Textures.Add("emptyheart");
+            Textures.Add("halfheart");
+            Textures.Add("fullheart");
             Textures.Add("viande");
             Textures.Add("dechetOrga");
 
@@ -100,16 +105,21 @@ namespace Ecosysteme_mono
                 _spriteBatch.Draw(TexturesDict[etre.GetTexture()], new Vector2(etre.getPos(0) * 10, etre.getPos(1) * 10), Color.White);
 
                 _spriteBatch.Draw(HealthBar, new Rectangle(etre.getPos(0) * 10, TexturesDict[etre.GetTexture()].Height+etre.getPos(1) * 10, etre.GetCurrentHp(), 5), Color.Red);
+                
+                _spriteBatch.Draw(EnergyBar, new Rectangle(etre.getPos(0) * 10, TexturesDict[etre.GetTexture()].Height + 5 + etre.getPos(1) * 10, etre.GetCurrentEp(), 5), Color.Yellow);
+                if (etre.IsPregnant())
+                {
+                    _spriteBatch.Draw(TexturesDict[etre.GetPregnancyStatus()], new Vector2((etre.getPos(0) * 10)+ TexturesDict[etre.GetTexture()].Width, etre.getPos(1) * 10), Color.White);
+                }
             });
 
-                
-
-            
 
             ToDrawPlante.ForEach(plante =>
             {
                 _spriteBatch.Draw(TexturesDict[plante.GetTexture()], new Vector2(plante.getPos(0) * 10, plante.getPos(1) * 10), Color.White);
             });
+
+
             ToDrawNourriture.ForEach(nourriture =>
             {
                 _spriteBatch.Draw(TexturesDict[nourriture.GetTexture()], new Vector2(nourriture.getPos(0) * 10, nourriture.getPos(1) * 10), Color.White);
