@@ -12,6 +12,7 @@ namespace Ecosysteme_mono
         private List<Animal> listAnimal;
         private List<Plante> listPlante;
         private List<Nourriture> listNourriture;
+        private List<EtreVivant> listEtre;
         private int sizeX, sizeY;
         private int counter = 0;
 
@@ -27,6 +28,19 @@ namespace Ecosysteme_mono
             matrix = new EtreVivant[sizeX, sizeY];
             UpdateMatrix();
         }
+
+        public plateau(int sizeX, int sizeY)
+        {
+            this.sizeX = sizeX;
+            this.sizeY = sizeY;
+            this.listPlante = new List<Plante>();
+            this.listAnimal = new List<Animal>();
+            this.listNourriture =new List<Nourriture>();
+            listEtre = new List<EtreVivant>();
+            matrix = new EtreVivant[sizeX, sizeY];
+            UpdateMatrix();
+        }
+
         private List<Animal> SortBySpeed(List<Animal> list)
         {
             return list.OrderByDescending(x => x.GetSpeed()).ToList();
@@ -45,40 +59,68 @@ namespace Ecosysteme_mono
             return listNourriture;
         }
 
+
         public void Play()
         {
-            List<KeyValuePair<string, Entite>> toDo = new List<KeyValuePair<string, Entite>>();
+            double index = double.PositiveInfinity;
+            for(int i = 0; i < listEtre.Count(); i++)
+            {
+                index = listEtre[i].GetPlay(matrix, this);
+                if (index <= i)
+                {
+                    i--;
+                }
+                UpdateMatrix();
+            }
             foreach (Nourriture nourriture in listNourriture)
             {
                 if (nourriture.GetType() == "viande")
                 {
                     nourriture.decay();
                 }
-            }
-            DoChanges(toDo);
-            toDo.Clear();
-            foreach (Plante plante in listPlante)
-            {
-                KeyValuePair<string, Entite> play = plante.GetPlay(matrix, this);
-                if (play.Key != "")
-                {
-                    toDo.Add(play);
-                }
                 UpdateMatrix();
             }
-            DoChanges(toDo);
-            toDo.Clear();
-            foreach (Animal etre in listAnimal)
-            {
-                KeyValuePair<string, Entite> play = etre.GetPlay(matrix, this);
-                if (play.Key != "")
-                {
-                    toDo.Add(play);
-                }
-                UpdateMatrix();
-            }
-            DoChanges(toDo);
         }
+
+        public int GetIndexEtre(EtreVivant etre)
+        {
+            return listEtre.IndexOf(etre);
+        }
+
+        //public void Play()
+        //{
+        //    List<KeyValuePair<string, Entite>> toDo = new List<KeyValuePair<string, Entite>>();
+        //    foreach (Nourriture nourriture in listNourriture)
+        //    {
+        //        if (nourriture.GetType() == "viande")
+        //        {
+        //            nourriture.decay();
+        //        }
+        //    }
+        //    DoChanges(toDo);
+        //    toDo.Clear();
+        //    foreach (Plante plante in listPlante)
+        //    {
+        //        KeyValuePair<string, Entite> play = plante.GetPlay(matrix, this);
+        //        if (play.Key != "")
+        //        {
+        //            toDo.Add(play);
+        //        }
+        //        UpdateMatrix();
+        //    }
+        //    DoChanges(toDo);
+        //    toDo.Clear();
+        //    foreach (Animal etre in listAnimal)
+        //    {
+        //        KeyValuePair<string, Entite> play = etre.GetPlay(matrix, this);
+        //        if (play.Key != "")
+        //        {
+        //            toDo.Add(play);
+        //        }
+        //        UpdateMatrix();
+        //    }
+        //    DoChanges(toDo);
+        //}
 
         private void DoChanges(List<KeyValuePair<string, Entite>> toDo)
         {
@@ -136,7 +178,8 @@ namespace Ecosysteme_mono
         public void AddAnimal(Animal etre)
         {
             listAnimal.Add(etre);
-            listAnimal = SortBySpeed(listAnimal);
+            //listAnimal = SortBySpeed(listAnimal);
+            listEtre.Add(etre);
             UpdateMatrix();
         }
         public void AddNourriture(Nourriture Nourriture)
@@ -147,6 +190,7 @@ namespace Ecosysteme_mono
 
         public void AddPlante(Plante Plante)
         {
+            listEtre.Add(Plante);
             listPlante.Add(Plante);
             UpdateMatrix();
         }
@@ -154,12 +198,14 @@ namespace Ecosysteme_mono
         public void DeletePlante(Plante Plante)
         {
             listPlante.Remove(Plante);
+            listEtre.Remove(Plante);
             listNourriture.Add(new Nourriture(Plante.getPos(0), Plante.getPos(1), 1, "dechetOrga"));
             UpdateMatrix();
         }
         public void DeleteAnimal(Animal Animal)
         {
             listAnimal.Remove(Animal);
+            listEtre.Remove(Animal);
             listNourriture.Add(new Nourriture(Animal.getPos(0), Animal.getPos(1), 1, "viande"));
             UpdateMatrix();
         }

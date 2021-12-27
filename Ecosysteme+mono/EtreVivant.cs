@@ -10,12 +10,12 @@ namespace Ecosysteme_mono
         public int hp, ep, epLossSpeed, maxHp, maxEp;
         public EtreVivant(int posX, int posY, int hp, int ep, int epLossSpeed):base(posX, posY)
         {
-
+            maxEp = ep;
             this.hp = hp;
-            this.ep = (int)0.5 * ep;
+            this.ep = (int)(ep*0.5);
             this.epLossSpeed = epLossSpeed;
             maxHp = hp;
-            maxEp = ep;
+            
         }
 
         public int GetCurrentHp()
@@ -37,10 +37,37 @@ namespace Ecosysteme_mono
             return " E";
         }
 
-
+        public void Hit()
+        {
+            hp -= (int)Math.Ceiling((double)maxHp / 4);
+        }
         
+        protected void EndTurn(Entite[,] matrix)
+        {
+            base.Checkpos(matrix);
+            if (ep > maxEp)
+            {
+                ep = maxEp;
+                hp += (int)Math.Ceiling((decimal)maxHp / 3);
+                if (hp > maxHp)
+                {
+                    hp = maxHp;
+                }
+            }
+            else if (ep > 0)
+            {
+                ep -= epLossSpeed;
+            }
+            else
+            {
+                hp -= (int)Math.Ceiling((decimal)maxHp / 10);
+                ep = (int)(maxEp*0.5);
+            }
 
-        public virtual KeyValuePair<string,Entite> GetPlay(Entite[,] matrix, plateau plateau)
+            
+        }
+
+        public virtual double GetPlay(Entite[,] matrix, plateau plateau)
         {
             Random rnd = new Random();
             posX += rnd.Next(-10, 11);
@@ -61,9 +88,33 @@ namespace Ecosysteme_mono
             {
                 posY = 0;
             }
-            return new KeyValuePair<string, Entite>();
+            return double.PositiveInfinity;
         }
 
-        
+        //public virtual KeyValuePair<string,Entite> GetPlay(Entite[,] matrix, plateau plateau)
+        //{
+        //    Random rnd = new Random();
+        //    posX += rnd.Next(-10, 11);
+        //    posY += rnd.Next(-10, 11);
+        //    if (posX >= matrix.GetLength(0))
+        //    {
+        //        posX = matrix.GetLength(0) - 1;
+        //    }
+        //    else if (posX < 0)
+        //    {
+        //        posX = 0;
+        //    }
+        //    if (posY >= matrix.GetLength(1))
+        //    {
+        //        posY = matrix.GetLength(1) - 1;
+        //    }
+        //    else if (posY < 0)
+        //    {
+        //        posY = 0;
+        //    }
+        //    return new KeyValuePair<string, Entite>();
+        //}
+
+
     }
 }

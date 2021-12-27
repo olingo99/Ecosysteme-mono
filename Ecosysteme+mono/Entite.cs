@@ -18,6 +18,11 @@ namespace Ecosysteme_mono
             return dim == 0 ? posX : posY;
         }
 
+        public Tuple<int,int> GetPos()
+        {
+            return new Tuple<int, int>(posX, posY);
+        }
+
         public virtual string GetTexture()
         {
             return "default";

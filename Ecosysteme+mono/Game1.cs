@@ -43,7 +43,7 @@ namespace Ecosysteme_mono
             _graphics.PreferredBackBufferHeight = 1300;   // set this value to the desired height of your window
             //TargetElapsedTime
             //Microsoft.Xna.Framework.Game.TargetElapsedTime = 30;
-            this.TargetElapsedTime = TimeSpan.FromSeconds((double)1/10);
+            this.TargetElapsedTime = TimeSpan.FromSeconds((double)1/5);
             _graphics.ApplyChanges();
             // TODO: Add your initialization logic here
 
@@ -59,6 +59,13 @@ namespace Ecosysteme_mono
             HealthBar = Content.Load<Texture2D>("healthbar");
             EnergyBar = Content.Load<Texture2D>("energybar");
 
+            Textures.Add("emptyheart");
+            Textures.Add("halfheart");
+            Textures.Add("fullheart");
+            Textures.Add("viande");
+            Textures.Add("dechetOrga");
+
+
             ToDrawAnimal.ForEach(etre =>
             {
                 Textures.Add(etre.GetTexture());
@@ -68,11 +75,7 @@ namespace Ecosysteme_mono
                 Textures.Add(etre.GetTexture());
             });
 
-            Textures.Add("emptyheart");
-            Textures.Add("halfheart");
-            Textures.Add("fullheart");
-            Textures.Add("viande");
-            Textures.Add("dechetOrga");
+            
 
             foreach(string texture in Textures)
             {
@@ -121,6 +124,10 @@ namespace Ecosysteme_mono
             ToDrawPlante.ForEach(plante =>
             {
                 _spriteBatch.Draw(TexturesDict[plante.GetTexture()], new Vector2(plante.getPos(0) * 10, plante.getPos(1) * 10), Color.White);
+
+                _spriteBatch.Draw(HealthBar, new Rectangle(plante.getPos(0) * 10, TexturesDict[plante.GetTexture()].Height + plante.getPos(1) * 10, plante.GetCurrentHp(), 5), Color.Red);
+
+                _spriteBatch.Draw(EnergyBar, new Rectangle(plante.getPos(0) * 10, TexturesDict[plante.GetTexture()].Height + 5 + plante.getPos(1) * 10, plante.GetCurrentEp(), 5), Color.Yellow);
             });
 
 
