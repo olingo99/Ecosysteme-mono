@@ -42,9 +42,9 @@ namespace Ecosysteme_mono
             return " E";
         }
 
-        public void Hit()
+        public void Hit(int damage)
         {
-            hp -= (int)Math.Ceiling((double)maxHp / 4);
+            hp -= damage;
         }
         
         protected void EndTurn(Entite[,] matrix)
@@ -53,7 +53,7 @@ namespace Ecosysteme_mono
             if (ep > maxEp)
             {
                 ep = maxEp;
-                hp += (int)Math.Ceiling((decimal)maxHp / 3);
+                hp += (int)Math.Floor((decimal)maxHp / 5);
                 if (hp > maxHp)
                 {
                     hp = maxHp;

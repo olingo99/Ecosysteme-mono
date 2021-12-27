@@ -7,13 +7,12 @@ namespace Ecosysteme_mono
 
     class Nourriture:Entite
     {
-        private int taille,decayTime;
+        private int decayTime;
         private string type;
 
 
-        public Nourriture(int x, int y, int taille, string type): base(x,y)
+        public Nourriture(int x, int y, string type): base(x,y)
         {
-            this.taille = taille;
             this.type = type;
             decayTime = 100;
         }

@@ -8,16 +8,18 @@ namespace Ecosysteme_mono
     {
 
         int rayonRacine, rayonSemis;
+        string espece;
 
-        public Plante(int posX, int posY, int hp,int ep, int epLossSpeed, int rayonRacine, int rayonSemis):base(posX,posY,hp,ep,epLossSpeed)
+        public Plante(int posX, int posY, int hp,int ep, int epLossSpeed, int rayonRacine, int rayonSemis, string espece):base(posX,posY,hp,ep,epLossSpeed)
         {
             this.rayonRacine = rayonRacine;
             this.rayonSemis = rayonSemis;
+            this.espece = espece;
         }
 
         public override string GetTexture()
         {
-            return "plante";
+            return espece;
         }
 
 
@@ -120,7 +122,7 @@ namespace Ecosysteme_mono
                 newPosY = posY + rnd.Next(-rayonSemis, rayonSemis + 1);
             }
             ep = (int)(maxEp*0.2);
-            return new Plante(newPosX, newPosY, maxHp, maxEp, epLossSpeed, rayonRacine, rayonSemis);
+            return new Plante(newPosX, newPosY, maxHp, maxEp, epLossSpeed, rayonRacine, rayonSemis,espece);
         }
     }
 }

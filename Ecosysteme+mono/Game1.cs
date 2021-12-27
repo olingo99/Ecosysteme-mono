@@ -108,20 +108,6 @@ namespace Ecosysteme_mono
 
             _spriteBatch.Begin();
 
-            ToDrawAnimal.ForEach(etre => {
-                _spriteBatch.Draw(TexturesDict[etre.GetTexture()], new Vector2(etre.getPos(0) * 10, etre.getPos(1) * 10), Color.White);
-                int t = etre.GetCurrentHp()-1;
-                int b = etre.GetMaxHp();
-                double test =((double)t/b);
-                _spriteBatch.Draw(HealthBar, new Rectangle(etre.getPos(0) * 10, TexturesDict[etre.GetTexture()].Height+etre.getPos(1) * 10, (int)(TexturesDict[etre.GetTexture()].Width* ((double)etre.GetCurrentHp()/etre.GetMaxHp())), 5), Color.Red);
-                
-                _spriteBatch.Draw(EnergyBar, new Rectangle(etre.getPos(0) * 10, TexturesDict[etre.GetTexture()].Height + 5 + etre.getPos(1) * 10, (int)(TexturesDict[etre.GetTexture()].Width * ((double)etre.GetCurrentEp() / etre.GetMaxEp())), 5), Color.Yellow);
-                if (etre.IsPregnant())
-                {
-                    _spriteBatch.Draw(TexturesDict[etre.GetPregnancyStatus()], new Vector2((etre.getPos(0) * 10)+ TexturesDict[etre.GetTexture()].Width, etre.getPos(1) * 10), Color.White);
-                }
-            });
-
 
             ToDrawPlante.ForEach(plante =>
             {
@@ -137,6 +123,28 @@ namespace Ecosysteme_mono
             {
                 _spriteBatch.Draw(TexturesDict[nourriture.GetTexture()], new Vector2(nourriture.getPos(0) * 10, nourriture.getPos(1) * 10), Color.White);
             });
+
+
+
+            ToDrawAnimal.ForEach(etre => {
+                _spriteBatch.Draw(TexturesDict[etre.GetTexture()], new Vector2(etre.getPos(0) * 10, etre.getPos(1) * 10), Color.White);
+                int t = etre.GetCurrentHp()-1;
+                int b = etre.GetMaxHp();
+                double test =((double)t/b);
+                _spriteBatch.Draw(HealthBar, new Rectangle(etre.getPos(0) * 10, TexturesDict[etre.GetTexture()].Height+etre.getPos(1) * 10, (int)(TexturesDict[etre.GetTexture()].Width* ((double)etre.GetCurrentHp()/etre.GetMaxHp())), 5), Color.Red);
+                
+                _spriteBatch.Draw(EnergyBar, new Rectangle(etre.getPos(0) * 10, TexturesDict[etre.GetTexture()].Height + 5 + etre.getPos(1) * 10, (int)(TexturesDict[etre.GetTexture()].Width * ((double)etre.GetCurrentEp() / etre.GetMaxEp())), 5), Color.Yellow);
+                if (etre.IsPregnant())
+                {
+                    _spriteBatch.Draw(TexturesDict[etre.GetPregnancyStatus()], new Vector2((etre.getPos(0) * 10)+ TexturesDict[etre.GetTexture()].Width, etre.getPos(1) * 10), Color.White);
+                }
+            });
+
+
+            
+
+
+            
 
             _spriteBatch.End();
 

@@ -83,7 +83,7 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:output-onlinepngtools (2).png;plante.png
+/build:output-onlinepngtools (2).png;buisson.png
 
 #begin output-onlinepngtools (3).png
 /importer:TextureImporter
@@ -132,6 +132,18 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:output-onlinepngtools (6).png;giraffe.png
+
+#begin output-onlinepngtools (7).png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:output-onlinepngtools (7).png;mastodonte.png
 
 #begin output-onlinepngtools.png
 /importer:TextureImporter

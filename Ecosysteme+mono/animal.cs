@@ -6,14 +6,14 @@ namespace Ecosysteme_mono
 {
     class Animal : EtreVivant
     {
-        private int periodeGestation, rayonContact, rayonVision, speed, tempsRestantNaissance, tempsJeune, counter;
+        private int periodeGestation, rayonContact, rayonVision, speed, tempsRestantNaissance, tempsJeune, counter, damage;
         private char sex;
         private string type, espece;
         //private List<Action> Moves;
         private bool pregnant;
 
 
-        public Animal(int posX, int posY, int hp, int ep, int epLossSpeed,int speed, char sex, int periodeGestation, int rayonContact, int rayonVision,string type, string espece):base(posX, posY, hp, ep, epLossSpeed) 
+        public Animal(int posX, int posY, int hp, int ep, int epLossSpeed,int speed, char sex, int periodeGestation, int rayonContact, int rayonVision,int damage,string type, string espece):base(posX, posY, hp, ep, epLossSpeed) 
         {
             this.periodeGestation = periodeGestation;
             this.rayonContact = rayonContact;
@@ -23,6 +23,7 @@ namespace Ecosysteme_mono
             this.speed = speed;
             this.espece = espece;
             this.pregnant = false;
+            this.damage = damage;
             tempsJeune = (int)(periodeGestation * 1.5);
             counter = 0;
             //temptest
@@ -63,8 +64,16 @@ namespace Ecosysteme_mono
                 Tuple<bool, Nourriture> foodIsInRange = FoodInRange(matrix);
                 if (foodIsInRange.Item1)
                 {
+                    if (foodIsInRange.Item2.GetType() == "viande")
+                    {
+                        ep = maxEp;
+                    }
+                    else
+                    {
+                        ep += damage;
+                    }
                     plateau.DeleteNourriture(foodIsInRange.Item2);
-                    ep += (int)Math.Ceiling((decimal)maxEp / 2);
+                    
                     EndTurn(matrix);
                     return double.PositiveInfinity;
                 }
@@ -81,10 +90,10 @@ namespace Ecosysteme_mono
             }
             EndTurn(matrix);
             Random rnd = new Random();
-            if (counter>=10)
+            if (counter>=20)
             {
                 counter = 0;
-                Nourriture newNourriture = new Nourriture(posX, posY, 3, "dechetOrga");
+                Nourriture newNourriture = new Nourriture(posX, posY, "dechetOrga");
                 
                 newNourriture.Checkpos(matrix);
                 plateau.AddNourriture(newNourriture);
@@ -274,11 +283,11 @@ namespace Ecosysteme_mono
                 {
                     ep+= (int)Math.Ceiling((decimal)maxEp / 2);
                 }
-                target.Hit();
+                target.Hit(damage);
             }
             else
             {
-                MoveToward(target.GetPos());
+                MoveToward(target.getPos(0),target.getPos(1)) ;
                 Checkpos(matrix);
             }
         }
@@ -312,7 +321,7 @@ namespace Ecosysteme_mono
             Random rnd = new Random();
             string newSex = "hf";
             pregnant = false;
-            Animal newAnimal = new Animal(posX, posY, hp, ep, epLossSpeed, speed,(char) newSex[rnd.Next(0,2)], periodeGestation, rayonContact, rayonVision, type, espece);
+            Animal newAnimal = new Animal(posX, posY, hp, ep, epLossSpeed, speed,(char) newSex[rnd.Next(0,2)], periodeGestation, rayonContact, rayonVision, damage,type, espece);
             newAnimal.Checkpos(matrix);
             tempsJeune = periodeGestation;
             return newAnimal;
@@ -339,8 +348,26 @@ namespace Ecosysteme_mono
         }
         private void MoveToward(int toPosX, int toPosY)
         {
-            posX += Math.Min(speed, toPosX - posX);
-            posY += Math.Min(speed, toPosY - posY);
+            int distanceX = toPosX - posX;
+            int distanceY = toPosY - posY;
+            int j = Math.Min(speed, Math.Abs(distanceX));
+            if (distanceX > 0)
+            {
+                posX += Math.Min(speed, Math.Abs(distanceX));
+            }
+            else
+            {
+                posX -= Math.Min(speed, Math.Abs(distanceX));
+            }
+            int i = Math.Min(speed, Math.Abs(distanceY));
+            if (distanceY > 0)
+            {
+                posY += Math.Min(speed, Math.Abs(distanceY));
+            }
+            else
+            {
+                posY -= Math.Min(speed, Math.Abs(distanceY));
+            }
         }
 
         private void MoveRandom(Entite[,] matrix)
@@ -385,10 +412,6 @@ namespace Ecosysteme_mono
             return sex;
         }
 
-        private void Reproduce()
-        {
-            return;
-        }
 
         public bool IsPregnant()
         {

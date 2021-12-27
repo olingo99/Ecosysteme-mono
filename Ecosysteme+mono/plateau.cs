@@ -199,14 +199,14 @@ namespace Ecosysteme_mono
         {
             listPlante.Remove(Plante);
             listEtre.Remove(Plante);
-            listNourriture.Add(new Nourriture(Plante.getPos(0), Plante.getPos(1), 1, "dechetOrga"));
+            listNourriture.Add(new Nourriture(Plante.getPos(0), Plante.getPos(1), "dechetOrga"));
             UpdateMatrix();
         }
         public void DeleteAnimal(Animal Animal)
         {
             listAnimal.Remove(Animal);
             listEtre.Remove(Animal);
-            listNourriture.Add(new Nourriture(Animal.getPos(0), Animal.getPos(1), 1, "viande"));
+            listNourriture.Add(new Nourriture(Animal.getPos(0), Animal.getPos(1), "viande"));
             UpdateMatrix();
         }
         public void DeleteNourriture(Nourriture Nourriture)
