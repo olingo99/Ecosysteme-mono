@@ -27,6 +27,11 @@ namespace Ecosysteme_mono
         {
             return ep;
         }
+
+        public int GetMaxEp()
+        {
+            return maxEp;
+        }
         public int GetMaxHp()
         {
             return maxHp;

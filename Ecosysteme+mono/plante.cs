@@ -35,8 +35,8 @@ namespace Ecosysteme_mono
             else if (ep >= (0.8 * maxEp))
             {
                 Random rnd = new Random();
-                //int randomBiased = (int)Math.Floor((double)Math.Abs(rnd.Next() - rnd.Next()) * (1 + 4 - 1) + 1);
-                for (int i =0; i<=rnd.Next(1,4); i++)
+
+                for (int i =0; i<rnd.Next(1,3); i++)
                 {
                     plateau.AddPlante(reproduce(matrix));
                 }
