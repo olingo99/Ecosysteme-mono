@@ -22,21 +22,21 @@ namespace Ecosysteme_mono
 
 
 
-        public override List<KeyValuePair<string, Entite>> GetPlay(Entite[,] matrix, plateau plateau)
+        public override KeyValuePair<string, Entite> GetPlay(Entite[,] matrix, plateau plateau)
         {
             List<KeyValuePair<string, Entite>> res = new List<KeyValuePair<string, Entite>>();
             if (ep >= 0.8*maxEp)
             {
-                res.Add(new KeyValuePair<string, Entite>("add", reproduce(matrix)));
+                return new KeyValuePair<string, Entite>("add", reproduce(matrix));
             }
             else { 
                 Tuple<bool, Nourriture> CheckFood = foodInRange(matrix);
                 if (CheckFood.Item1)
                 {
-                    res.Add(new KeyValuePair<string, Entite>("remove", CheckFood.Item2));
+                    return new KeyValuePair<string, Entite>("remove", CheckFood.Item2);
                 }
             };
-            return res;
+            return new KeyValuePair<string, Entite>("", null);
         }
 
         private Tuple<bool, Nourriture> foodInRange(Entite[,] matrix)

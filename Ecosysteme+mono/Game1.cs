@@ -41,6 +41,9 @@ namespace Ecosysteme_mono
         {
             _graphics.PreferredBackBufferWidth = 2500;  // set this value to the desired width of your window
             _graphics.PreferredBackBufferHeight = 1300;   // set this value to the desired height of your window
+            //TargetElapsedTime
+            //Microsoft.Xna.Framework.Game.TargetElapsedTime = 30;
+            this.TargetElapsedTime = TimeSpan.FromSeconds((double)1/10);
             _graphics.ApplyChanges();
             // TODO: Add your initialization logic here
 

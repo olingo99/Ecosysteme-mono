@@ -9,8 +9,8 @@ namespace Ecosysteme_mono
         static void Main()
         {
             
-            Animal test = new Animal(25,25,100,10,2,10,'h',5,10,20,"herbivore","dino");
-            Animal test2 = new Animal(26, 26, 10, 10, 2, 10, 'f', 205, 10, 20, "herbivore","dino");
+            Animal test = new Animal(25,25,100,100,1,10,'h',5,10,20,"herbivore","dino");
+            Animal test2 = new Animal(26, 26, 10, 100, 1, 10, 'f', 205, 10, 20, "herbivore","dino");
             test.ep = test.maxEp;
             test2.ep = test2.maxEp;
             //Animal test3 = new Animal(15, 15, 10, 2, 2, 10, 'f', 5, 5, 15, "herbivore","dino");
@@ -29,7 +29,7 @@ namespace Ecosysteme_mono
             lp.Add(new Plante(200, 110, 5, 2, 2, 15, 15));
             ln.Add(new Nourriture(0, 0, 2, "dechetOrga"));
             ln.Add(new Nourriture(0, 0, 2, "viande"));
-            plateau plat = new plateau(250, 150, l,lp,ln);
+            plateau plat = new plateau(250, 130, l,lp,ln);
             var game = new Game1(plat);
             game.Run();
         }

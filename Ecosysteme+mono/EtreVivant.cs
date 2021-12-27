@@ -40,7 +40,7 @@ namespace Ecosysteme_mono
 
         
 
-        public virtual List<KeyValuePair<string,Entite>> GetPlay(Entite[,] matrix, plateau plateau)
+        public virtual KeyValuePair<string,Entite> GetPlay(Entite[,] matrix, plateau plateau)
         {
             Random rnd = new Random();
             posX += rnd.Next(-10, 11);
@@ -61,7 +61,7 @@ namespace Ecosysteme_mono
             {
                 posY = 0;
             }
-            return new List<KeyValuePair<string, Entite>>();
+            return new KeyValuePair<string, Entite>();
         }
 
         

@@ -59,14 +59,22 @@ namespace Ecosysteme_mono
             toDo.Clear();
             foreach (Plante plante in listPlante)
             {
-                toDo.AddRange(plante.GetPlay(matrix, this));
+                KeyValuePair<string, Entite> play = plante.GetPlay(matrix, this);
+                if (play.Key != "")
+                {
+                    toDo.Add(play);
+                }
                 UpdateMatrix();
             }
             DoChanges(toDo);
             toDo.Clear();
             foreach (Animal etre in listAnimal)
             {
-                toDo.AddRange(etre.GetPlay(matrix, this));
+                KeyValuePair<string, Entite> play = etre.GetPlay(matrix, this);
+                if (play.Key != "")
+                {
+                    toDo.Add(play);
+                }
                 UpdateMatrix();
             }
             DoChanges(toDo);
@@ -152,7 +160,7 @@ namespace Ecosysteme_mono
         public void DeleteAnimal(Animal Animal)
         {
             listAnimal.Remove(Animal);
-            listNourriture.Add(new Nourriture(20, 100, 1, "viande"));
+            listNourriture.Add(new Nourriture(Animal.getPos(0), Animal.getPos(1), 1, "viande"));
             UpdateMatrix();
         }
         public void DeleteNourriture(Nourriture Nourriture)

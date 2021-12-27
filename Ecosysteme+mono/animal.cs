@@ -9,7 +9,7 @@ namespace Ecosysteme_mono
         private int periodeGestation, rayonContact, rayonVision, speed, tempsRestantNaissance;
         private char sex;
         private string type, espece;
-        private List<Action> Moves;
+        //private List<Action> Moves;
         private bool pregnant;
 
         public Animal(int posX, int posY, int hp, int ep, int epLossSpeed,int speed, char sex, int periodeGestation, int rayonContact, int rayonVision,string type, string espece):base(posX, posY, hp, ep, epLossSpeed) 
@@ -28,14 +28,18 @@ namespace Ecosysteme_mono
            
         }
 
-        public override List<KeyValuePair<string, Entite>> GetPlay(Entite[,] matrix, plateau plateau)
+        public override KeyValuePair<string, Entite> GetPlay(Entite[,] matrix, plateau plateau)
         {
-            List<KeyValuePair<string, Entite>> res = new List<KeyValuePair<string, Entite>>();
+            //List<KeyValuePair<string, Entite>> res = new List<KeyValuePair<string, Entite>>();
 
             double test = 0.8 * maxEp;
-            if(IsPregnant() && tempsRestantNaissance == 0)
+            if(hp <= 0)
             {
-                res.Add(new KeyValuePair<string, Entite>("add",Naissance(matrix)));
+                return new KeyValuePair<string, Entite>("delete", this);
+            }
+            else if (IsPregnant() && tempsRestantNaissance == 0)
+            {
+                return new KeyValuePair<string, Entite>("add", Naissance(matrix));
             }
             else if (EnForme())
             {
@@ -43,16 +47,34 @@ namespace Ecosysteme_mono
             }
             else
             {
-                MoveRandom(matrix);
+                Tuple<bool, Nourriture> foodIsInRange = FoodInRange(matrix);
+                if (foodIsInRange.Item1)
+                {
+                    ep += 10 * epLossSpeed;
+                    return new KeyValuePair<string, Entite>("delete", foodIsInRange.Item2);
+                }
+                else
+                {
+                    SeekFood(matrix);
+                }
+                
             }
             base.Checkpos(matrix);
-
-            ep -= epLossSpeed;
+            if (ep > 0)
+            {
+                ep -= epLossSpeed;
+            }
+            else
+            {
+                hp -=(int)Math.Ceiling((decimal)maxHp / 10);
+                ep = maxEp;
+            }
+            
             if (IsPregnant())
             {
                 tempsRestantNaissance--;
             }
-            return res;
+            return new KeyValuePair<string, Entite>("",null);
         }
 
         private void SeekMate(Entite[,] matrix)
@@ -93,6 +115,89 @@ namespace Ecosysteme_mono
         }
 
 
+        //private Tuple<bool,Nourriture> SeekFood(Entite[,] matrix)
+        //{
+        //    for (int i = Math.Max(posX - (rayonVision / 2), 0); i <= Math.Min(posX + (rayonVision / 2), matrix.GetLength(0) - 1); i++)
+        //    {
+        //        for (int j = Math.Max(posY - (rayonVision / 2), 0); j <= Math.Min(posY + (rayonVision / 2), matrix.GetLength(1) - 1); j++)
+        //        {
+        //            if (matrix[i, j] is Nourriture)
+        //            {
+        //                Nourriture nourriture = (Nourriture)matrix[i, j];
+        //                if ((nourriture.GetType()=="dechetOrga" && type == "herbivore")|| (nourriture.GetType() == "viande" && type == "carnivore"))
+        //                {
+        //                    double distance = Math.Sqrt((Math.Pow(nourriture.getPos(0) - posX, 2) + Math.Pow(nourriture.getPos(1) - posY, 2)));
+        //                    if (distance <= rayonVision && distance >= rayonContact)//pas de && dans le if du dessus pour eviter de faire le calcul pour rien
+        //                    {
+        //                        MoveToward(nourriture.getPos(0), nourriture.getPos(1));
+        //                        return new Tuple<bool, Nourriture>(false, null);
+        //                    }
+        //                    else if (distance <= rayonVision && distance <= rayonContact)
+        //                    {
+        //                        return new Tuple<bool, Nourriture>(true, nourriture);
+        //                    }
+        //                }
+        //            }
+        //        }
+        //    }
+        //}
+
+        private void SeekFood(Entite[,] matrix)
+        {
+            Nourriture closestFood = null;
+            double smallestDistance = double.PositiveInfinity;
+            for (int i = Math.Max(posX - (rayonVision / 2), 0); i <= Math.Min(posX + (rayonVision / 2), matrix.GetLength(0) - 1); i++)
+            {
+                for (int j = Math.Max(posY - (rayonVision / 2), 0); j <= Math.Min(posY + (rayonVision / 2), matrix.GetLength(1) - 1); j++)
+                {
+                    if (matrix[i, j] is Nourriture)
+                    {
+                        Nourriture nourriture = (Nourriture)matrix[i, j];
+                        if ((nourriture.GetType() == "dechetOrga" && type == "herbivore") || (nourriture.GetType() == "viande" && type == "carnivore"))
+                        {
+                            double distance = Math.Sqrt((Math.Pow(nourriture.getPos(0) - posX, 2) + Math.Pow(nourriture.getPos(1) - posY, 2)));
+                            if (distance < smallestDistance && distance < rayonVision)
+                            {
+                                closestFood = nourriture;
+                                smallestDistance = distance;
+                            }
+                        }
+                    }
+                }
+            }
+            if (closestFood != null)
+            {
+                MoveToward(closestFood.getPos(0), closestFood.getPos(1));
+            }
+            else
+            {
+                MoveRandom(matrix);
+            }
+        }
+
+        private Tuple<bool, Nourriture> FoodInRange(Entite[,] matrix)
+        {
+            for (int i = Math.Max(posX - (rayonContact / 2), 0); i <= Math.Min(posX + (rayonContact / 2), matrix.GetLength(0) - 1); i++)
+            {
+                for (int j = Math.Max(posY - (rayonContact / 2), 0); j <= Math.Min(posY + (rayonContact / 2), matrix.GetLength(1) - 1); j++)
+                {
+                    if (matrix[i, j] is Nourriture)
+                    {
+                        Nourriture nourriture = (Nourriture)matrix[i, j];
+                        if ((nourriture.GetType() == "dechetOrga" && type == "herbivore") || (nourriture.GetType() == "viande" && type == "carnivore"))
+                        {
+                            double distance = Math.Sqrt((Math.Pow(nourriture.getPos(0) - posX, 2) + Math.Pow(nourriture.getPos(1) - posY, 2)));
+                            if (distance < rayonContact)
+                            {
+                                return new Tuple<bool, Nourriture>(true, nourriture);
+                            }
+                        }
+                    }
+                }
+            }
+            return new Tuple<bool, Nourriture>(false, null);
+        }
+
         private Animal Naissance(Entite[,] matrix)
         {
             Random rnd = new Random();
@@ -127,8 +232,8 @@ namespace Ecosysteme_mono
         private void MoveRandom(Entite[,] matrix)
         {
             Random rnd = new Random();
-            posX += rnd.Next(-1, 2);
-            posY += rnd.Next(-1, 2);
+            posX += rnd.Next(-speed, speed+1);
+            posY += rnd.Next(-speed, speed+1);
             if (posX >= matrix.GetLength(0))
             {
                 posX = matrix.GetLength(0) - 1;
