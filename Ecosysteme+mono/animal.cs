@@ -6,7 +6,7 @@ namespace Ecosysteme_mono
 {
     class Animal : EtreVivant
     {
-        private int periodeGestation, rayonContact, rayonVision, speed, tempsRestantNaissance,counter;
+        private int periodeGestation, rayonContact, rayonVision, speed, tempsRestantNaissance, tempsJeune, counter;
         private char sex;
         private string type, espece;
         //private List<Action> Moves;
@@ -23,6 +23,7 @@ namespace Ecosysteme_mono
             this.speed = speed;
             this.espece = espece;
             this.pregnant = false;
+            tempsJeune = (int)(periodeGestation * 1.5);
             counter = 0;
             //temptest
             
@@ -34,6 +35,10 @@ namespace Ecosysteme_mono
         {
             int index;
             counter++;
+            if (tempsJeune > 0)
+            {
+                tempsJeune--;
+            }
             //List<KeyValuePair<string, Entite>> res = new List<KeyValuePair<string, Entite>>();
 
             //double test = 0.8 * maxEp;
@@ -151,7 +156,7 @@ namespace Ecosysteme_mono
                     if (matrix[i, j] is Animal && matrix[i,j]!=this)
                     {
                         Animal animal = (Animal) matrix[i, j];
-                        if (animal.GetEspece() == espece && animal.GetSex()!=sex && !(animal.IsPregnant()))
+                        if (!pregnant && animal.GetEspece() == espece && animal.GetSex()!=sex && !(animal.IsPregnant()) && tempsJeune==0 && animal.GetTempsJeune()==0)
                         {
                             double distance = Math.Sqrt((Math.Pow(animal.getPos(0) - posX, 2) + Math.Pow(animal.getPos(1) - posY, 2)));
                             if (distance<=rayonVision && distance >= rayonContact)//pas de && dans le if du dessus pour eviter de faire le calcul pour rien
@@ -309,6 +314,7 @@ namespace Ecosysteme_mono
             pregnant = false;
             Animal newAnimal = new Animal(posX, posY, hp, ep, epLossSpeed, speed,(char) newSex[rnd.Next(0,2)], periodeGestation, rayonContact, rayonVision, type, espece);
             newAnimal.Checkpos(matrix);
+            tempsJeune = periodeGestation;
             return newAnimal;
         }
         public bool EnForme()
@@ -316,6 +322,10 @@ namespace Ecosysteme_mono
             return ep >= 0.8 * maxEp;
         }
 
+        public int GetTempsJeune()
+        {
+            return tempsJeune;
+        }
         public void Impregnate()
         {
             pregnant = true;
