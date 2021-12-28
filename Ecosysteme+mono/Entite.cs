@@ -1,6 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
+
 
 namespace Ecosysteme_mono
 {
@@ -13,7 +12,7 @@ namespace Ecosysteme_mono
             this.posY = posY;
         }
 
-        public int getPos(int dim)
+        public int GetPos(int dim)
         {
             return dim == 0 ? posX : posY;
         }
@@ -30,7 +29,6 @@ namespace Ecosysteme_mono
 
         public void Checkpos(Entite[,] matrix)
         {
-            Random rnd = new Random();
             while(matrix[posX,posY] is Entite && matrix[posX, posY] != this)
             {
                 posX = posX > matrix.GetLength(0)/2 ? posX-1 : posX+1;
@@ -38,8 +36,6 @@ namespace Ecosysteme_mono
             }
         }
 
-        
     }
-
 
 }

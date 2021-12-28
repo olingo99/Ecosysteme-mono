@@ -3,8 +3,6 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System;
 using System.Collections.Generic;
-using System.Text;
-using System.Linq;
 
 namespace Ecosysteme_mono
 {
@@ -13,15 +11,14 @@ namespace Ecosysteme_mono
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
         private Texture2D HealthBar, EnergyBar;
-        private plateau plateau;
+        private Plateau plateau;
         private List<Plante> ToDrawPlante;
         private List<Animal> ToDrawAnimal;
         private List<Nourriture> ToDrawNourriture;
-        private float scale;
         private HashSet<string> Textures;
         private Dictionary<string, Texture2D> TexturesDict;
 
-        public Game1(plateau plateau)
+        public Game1(Plateau plateau)
         {
 
             _graphics = new GraphicsDeviceManager(this);
@@ -33,7 +30,6 @@ namespace Ecosysteme_mono
             ToDrawPlante = plateau.GetListPlante();
             Textures = new HashSet<string>();
             TexturesDict = new Dictionary<string, Texture2D>();
-            scale = 0.05f;
         }
 
 
@@ -41,8 +37,6 @@ namespace Ecosysteme_mono
         {
             _graphics.PreferredBackBufferWidth = 2500;  // set this value to the desired width of your window
             _graphics.PreferredBackBufferHeight = 1300;   // set this value to the desired height of your window
-            //TargetElapsedTime
-            //Microsoft.Xna.Framework.Game.TargetElapsedTime = 30;
             this.TargetElapsedTime = TimeSpan.FromSeconds((double)1/5);
             _graphics.ApplyChanges();
             // TODO: Add your initialization logic here
@@ -76,20 +70,16 @@ namespace Ecosysteme_mono
             });
 
             
-
             foreach(string texture in Textures)
             {
                 TexturesDict.Add(texture, Content.Load<Texture2D>(texture));
             }
-            //dinoTexture = Content.Load<Texture2D>("dino");
         }
 
         protected override void Update(GameTime gameTime)
         {
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
-
-
 
             // TODO: Add your update logic here
             ToDrawPlante = plateau.GetListPlante();
@@ -103,7 +93,6 @@ namespace Ecosysteme_mono
 
         protected override void Draw(GameTime gameTime)
         {
-            //System.Threading.Thread.Sleep(250);
             GraphicsDevice.Clear(Color.SandyBrown);
 
             _spriteBatch.Begin();
@@ -111,40 +100,33 @@ namespace Ecosysteme_mono
 
             ToDrawPlante.ForEach(plante =>
             {
-                _spriteBatch.Draw(TexturesDict[plante.GetTexture()], new Vector2(plante.getPos(0) * 10, plante.getPos(1) * 10), Color.White);
+                _spriteBatch.Draw(TexturesDict[plante.GetTexture()], new Vector2(plante.GetPos(0) * 10, plante.GetPos(1) * 10), Color.White);
 
-                _spriteBatch.Draw(HealthBar, new Rectangle(plante.getPos(0) * 10, TexturesDict[plante.GetTexture()].Height + plante.getPos(1) * 10, (int)(TexturesDict[plante.GetTexture()].Width * ((double)plante.GetCurrentHp() / plante.GetMaxHp())), 5), Color.Red);
+                _spriteBatch.Draw(HealthBar, new Rectangle(plante.GetPos(0) * 10, TexturesDict[plante.GetTexture()].Height + plante.GetPos(1) * 10, (int)(TexturesDict[plante.GetTexture()].Width * ((double)plante.GetCurrentHp() / plante.GetMaxHp())), 5), Color.Red);
 
-                _spriteBatch.Draw(EnergyBar, new Rectangle(plante.getPos(0) * 10, TexturesDict[plante.GetTexture()].Height + 5 + plante.getPos(1) * 10, (int)(TexturesDict[plante.GetTexture()].Width * ((double)plante.GetCurrentEp() / plante.GetMaxEp())), 5), Color.Yellow);
+                _spriteBatch.Draw(EnergyBar, new Rectangle(plante.GetPos(0) * 10, TexturesDict[plante.GetTexture()].Height + 5 + plante.GetPos(1) * 10, (int)(TexturesDict[plante.GetTexture()].Width * ((double)plante.GetCurrentEp() / plante.GetMaxEp())), 5), Color.Yellow);
             });
 
 
             ToDrawNourriture.ForEach(nourriture =>
             {
-                _spriteBatch.Draw(TexturesDict[nourriture.GetTexture()], new Vector2(nourriture.getPos(0) * 10, nourriture.getPos(1) * 10), Color.White);
+                _spriteBatch.Draw(TexturesDict[nourriture.GetTexture()], new Vector2(nourriture.GetPos(0) * 10, nourriture.GetPos(1) * 10), Color.White);
             });
-
 
 
             ToDrawAnimal.ForEach(etre => {
-                _spriteBatch.Draw(TexturesDict[etre.GetTexture()], new Vector2(etre.getPos(0) * 10, etre.getPos(1) * 10), Color.White);
+                _spriteBatch.Draw(TexturesDict[etre.GetTexture()], new Vector2(etre.GetPos(0) * 10, etre.GetPos(1) * 10), Color.White);
                 int t = etre.GetCurrentHp()-1;
                 int b = etre.GetMaxHp();
                 double test =((double)t/b);
-                _spriteBatch.Draw(HealthBar, new Rectangle(etre.getPos(0) * 10, TexturesDict[etre.GetTexture()].Height+etre.getPos(1) * 10, (int)(TexturesDict[etre.GetTexture()].Width* ((double)etre.GetCurrentHp()/etre.GetMaxHp())), 5), Color.Red);
+                _spriteBatch.Draw(HealthBar, new Rectangle(etre.GetPos(0) * 10, TexturesDict[etre.GetTexture()].Height+etre.GetPos(1) * 10, (int)(TexturesDict[etre.GetTexture()].Width* ((double)etre.GetCurrentHp()/etre.GetMaxHp())), 5), Color.Red);
                 
-                _spriteBatch.Draw(EnergyBar, new Rectangle(etre.getPos(0) * 10, TexturesDict[etre.GetTexture()].Height + 5 + etre.getPos(1) * 10, (int)(TexturesDict[etre.GetTexture()].Width * ((double)etre.GetCurrentEp() / etre.GetMaxEp())), 5), Color.Yellow);
+                _spriteBatch.Draw(EnergyBar, new Rectangle(etre.GetPos(0) * 10, TexturesDict[etre.GetTexture()].Height + 5 + etre.GetPos(1) * 10, (int)(TexturesDict[etre.GetTexture()].Width * ((double)etre.GetCurrentEp() / etre.GetMaxEp())), 5), Color.Yellow);
                 if (etre.IsPregnant())
                 {
-                    _spriteBatch.Draw(TexturesDict[etre.GetPregnancyStatus()], new Vector2((etre.getPos(0) * 10)+ TexturesDict[etre.GetTexture()].Width, etre.getPos(1) * 10), Color.White);
+                    _spriteBatch.Draw(TexturesDict[etre.GetPregnancyStatus()], new Vector2((etre.GetPos(0) * 10)+ TexturesDict[etre.GetTexture()].Width, etre.GetPos(1) * 10), Color.White);
                 }
             });
-
-
-            
-
-
-            
 
             _spriteBatch.End();
 

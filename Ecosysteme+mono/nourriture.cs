@@ -20,7 +20,7 @@ namespace Ecosysteme_mono
         
         public string Type { get => type; set => type = value; }
 
-        public void decay()
+        public void Decay()
         {
             decayTime--;
             if (decayTime == 0)
