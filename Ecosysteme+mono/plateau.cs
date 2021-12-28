@@ -7,7 +7,6 @@ namespace Ecosysteme_mono
 {
     class Plateau
     {
-        //nouvelle branches
         private Entite[,] matrix;
         private readonly List<Animal> listAnimal;
         private readonly List<Plante> listPlante;

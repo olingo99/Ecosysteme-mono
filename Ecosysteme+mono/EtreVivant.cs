@@ -2,7 +2,7 @@
 
 namespace Ecosysteme_mono
 {
-    class EtreVivant:Entite
+    abstract class EtreVivant:Entite
     {
         public int hp, ep, epLossSpeed, maxHp, maxEp;
         public EtreVivant(int posX, int posY, int hp, int ep, int epLossSpeed):base(posX, posY)
