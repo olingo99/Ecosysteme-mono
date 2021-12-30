@@ -5,24 +5,22 @@ using System.Text;
 namespace Ecosysteme_mono
 {
 
-    class nourriture
+    class Nourriture:Entite
     {
-        private int taille, posX, posY,decayTime;
+        private int decayTime;
         private string type;
 
 
-        public nourriture(int x, int y, int taille, string type)
+        public Nourriture(int x, int y, string type): base(x,y)
         {
-            posX = x;
-            posY = y;
-            this.taille = taille;
             this.type = type;
-            decayTime = 10;
+            decayTime = 100;
         }
 
+        
         public string Type { get => type; set => type = value; }
 
-        public void decay()
+        public void Decay()
         {
             decayTime--;
             if (decayTime == 0)
@@ -31,10 +29,13 @@ namespace Ecosysteme_mono
             }
         }
 
-        public int getPos(int dim)
+        public new string GetType()
         {
-            return dim == 0 ? posX : posY;
+            return type;
         }
-
+        public override string GetTexture()
+        {
+            return type;
+        }
     }
 }

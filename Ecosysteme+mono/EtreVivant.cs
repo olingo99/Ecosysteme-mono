@@ -1,43 +1,75 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Linq;
 
 namespace Ecosysteme_mono
 {
-    class EtreVivant
+    abstract class EtreVivant:Entite
     {
-        private int posX, posY, hp, ep, epLossSpeed, speed;
-        public EtreVivant(int posX, int posY, int hp, int ep, int epLossSpeed, int speed)
+        public int hp, ep, epLossSpeed, maxHp, maxEp;
+        public EtreVivant(int posX, int posY, int hp, int ep, int epLossSpeed):base(posX, posY)
         {
-            this.posX = posX;
-            this.posY = posY;
+            maxEp = ep;
             this.hp = hp;
-            this.ep = ep;
+            this.ep = (int)(ep*0.5);
             this.epLossSpeed = epLossSpeed;
-            this.speed = speed;
+            maxHp = hp;
+            
         }
 
-        public int getPos(int dim)
-        {
-            return dim == 0 ? posX : posY;
-        }
-
-        public int GetHp()
+        public int GetCurrentHp()
         {
             return hp;
+        }
+
+        public int GetCurrentEp()
+        {
+            return ep;
+        }
+
+        public int GetMaxEp()
+        {
+            return maxEp;
+        }
+        public int GetMaxHp()
+        {
+            return maxHp;
         }
 
         public override string ToString()
         {
             return " E";
         }
-        public int GetSpeed()
+
+        public void Hit(int damage)
         {
-            return this.speed;
+            hp -= damage;
+        }
+        
+        protected void EndTurn(Entite[,] matrix)
+        {
+            base.Checkpos(matrix);
+            if (ep > maxEp)
+            {
+                ep = maxEp;
+                hp += (int)Math.Floor((decimal)maxHp / 5);
+                if (hp > maxHp)
+                {
+                    hp = maxHp;
+                }
+            }
+            else if (ep > 0)
+            {
+                ep -= epLossSpeed;
+            }
+            else
+            {
+                hp -= (int)Math.Ceiling((decimal)maxHp / 10);
+                ep = (int)(maxEp*0.5);
+            }
+
+            
         }
 
-        public void GetPlay(EtreVivant[,] matrix)
+        public virtual double GetPlay(Entite[,] matrix, Plateau plateau)
         {
             Random rnd = new Random();
             posX += rnd.Next(-10, 11);
@@ -58,6 +90,7 @@ namespace Ecosysteme_mono
             {
                 posY = 0;
             }
+            return double.PositiveInfinity;
         }
 
     }

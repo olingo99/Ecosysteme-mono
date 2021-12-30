@@ -5,70 +5,183 @@ using System.Linq;
 
 namespace Ecosysteme_mono
 {
-    class plateau
+    class Plateau
     {
-        //nouvelle branches
-        private EtreVivant[,] matrix;
-        private List<EtreVivant> listEtre;
-        private int sizeX, sizeY;
-        private int counter = 0;
+        private Entite[,] matrix;
+        private readonly List<Animal> listAnimal;
+        private readonly List<Plante> listPlante;
+        private readonly List<Nourriture> listNourriture;
+        private readonly List<EtreVivant> listEtre;
+        private readonly int sizeX, sizeY;
 
 
 
-        public plateau(int sizeX, int sizeY, List<EtreVivant> list)
+        public Plateau(int sizeX, int sizeY, List<Animal> list,List<Plante> listPlante, List<Nourriture> listNourriture)
         {
             this.sizeX = sizeX;
             this.sizeY = sizeY;
-            this.matrix = new EtreVivant[sizeX, sizeY];
-            this.listEtre = SortBySpeed(list);
+            this.listPlante = listPlante;
+            this.listAnimal = SortBySpeed(list);
+            this.listNourriture = listNourriture;
+            matrix = new EtreVivant[sizeX, sizeY];
+            UpdateMatrix();
         }
-        private List<EtreVivant> SortBySpeed(List<EtreVivant> list)
+
+        public Plateau(int sizeX, int sizeY)
+        {
+            this.sizeX = sizeX;
+            this.sizeY = sizeY;
+            this.listPlante = new List<Plante>();
+            this.listAnimal = new List<Animal>();
+            this.listNourriture =new List<Nourriture>();
+            listEtre = new List<EtreVivant>();
+            matrix = new EtreVivant[sizeX, sizeY];
+            UpdateMatrix();
+        }
+
+        private List<Animal> SortBySpeed(List<Animal> list)
         {
             return list.OrderByDescending(x => x.GetSpeed()).ToList();
         }
 
-        public List<EtreVivant> GetList()
+        public List<Plante> GetListPlante()
         {
-            return listEtre;
+            return listPlante;
         }
+        public List<Animal> GetListAnimal()
+        {
+            return listAnimal;
+        }
+        public List<Nourriture> GetListNourriture()
+        {
+            return listNourriture;
+        }
+
+
         public void Play()
         {
-            foreach (EtreVivant etre in listEtre)
+            double index = double.PositiveInfinity;
+            for(int i = 0; i < listEtre.Count(); i++)
             {
-                etre.GetPlay(matrix);
+                index = listEtre[i].GetPlay(matrix, this);
+                if (index <= i)
+                {
+                    i--;
+                }
+                UpdateMatrix();
+            }
+            foreach (Nourriture nourriture in listNourriture)
+            {
+                if (nourriture.GetType() == "viande")
+                {
+                    nourriture.Decay();
+                }
                 UpdateMatrix();
             }
         }
 
-        //public void Play()
-        //{
-        //    listEtre[counter].GetPlay(matrix);
-        //    UpdateMatrix();
-        //    counter++;
-        //    if (counter >= listEtre.Count)
-        //    {
-        //        counter = 0;
-        //    }
-        //}
-
-        public void AddEtre(EtreVivant etre)
+        public int GetIndexEtre(EtreVivant etre)
         {
-            listEtre.Add(etre);
-            listEtre = SortBySpeed(listEtre);
+            return listEtre.IndexOf(etre);
         }
 
-        public void DeleteEtre(EtreVivant etre)
-        {
-            listEtre.Remove(etre);
-        }
 
-        private void UpdateMatrix()
+        private void DoChanges(List<KeyValuePair<string, Entite>> toDo)
         {
-            this.matrix = new EtreVivant[sizeX, sizeY];
-            foreach (EtreVivant etre in listEtre)
+            toDo.ForEach(elem =>                    //impossible de faire un switch case avec typeof
             {
+                if (elem.Value.GetType()==typeof(Animal))
+                {
+                    if (elem.Key == "add")
+                    {
+                        AddAnimal((Animal)elem.Value);
+                    }
+                    else
+                    {
+                        DeleteAnimal((Animal)elem.Value);
+                    }
+                }
+                else if (elem.Value.GetType() == typeof(Plante))
+                {
+                    if (elem.Key == "add")
+                    {
+                        AddPlante((Plante)elem.Value);
+                    }
+                    else
+                    {
+                        DeletePlante((Plante)elem.Value);
+                    }
 
-                matrix[etre.getPos(0), etre.getPos(1)] = etre;
+                }
+                else if (elem.Value.GetType() == typeof(Nourriture))
+                {
+                    if (elem.Key == "add")
+                    {
+                        AddNourriture((Nourriture)elem.Value);
+                    }
+                    else
+                    {
+                        DeleteNourriture((Nourriture)elem.Value);
+                    }
+
+                }
+            });
+        }
+
+
+        public void AddAnimal(Animal etre)
+        {
+            listAnimal.Add(etre);
+            listEtre.Add(etre);
+            UpdateMatrix();
+        }
+        public void AddNourriture(Nourriture Nourriture)
+        {
+            listNourriture.Add(Nourriture);
+            UpdateMatrix();
+        }
+
+        public void AddPlante(Plante Plante)
+        {
+            listEtre.Add(Plante);
+            listPlante.Add(Plante);
+            UpdateMatrix();
+        }
+
+        public void DeletePlante(Plante Plante)
+        {
+            listPlante.Remove(Plante);
+            listEtre.Remove(Plante);
+            listNourriture.Add(new Nourriture(Plante.GetPos(0), Plante.GetPos(1), "dechetOrga"));
+            UpdateMatrix();
+        }
+        public void DeleteAnimal(Animal Animal)
+        {
+            listAnimal.Remove(Animal);
+            listEtre.Remove(Animal);
+            listNourriture.Add(new Nourriture(Animal.GetPos(0), Animal.GetPos(1), "viande"));
+            UpdateMatrix();
+        }
+        public void DeleteNourriture(Nourriture Nourriture)
+        {
+            listNourriture.Remove(Nourriture);
+            UpdateMatrix();
+        }
+
+        private void UpdateMatrix() 
+        {
+            this.matrix = new Entite[sizeX, sizeY];
+            foreach (Animal etre in listAnimal)
+            {
+                matrix[etre.GetPos(0), etre.GetPos(1)] = etre;
+            }
+            foreach (Plante etre in listPlante)
+            {
+                matrix[etre.GetPos(0), etre.GetPos(1)] = etre;
+            }
+            foreach (Nourriture Nourriture in listNourriture)
+            {
+                matrix[Nourriture.GetPos(0), Nourriture.GetPos(1)] = Nourriture;
             }
         }
 

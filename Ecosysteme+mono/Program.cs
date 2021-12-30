@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 
 namespace Ecosysteme_mono
 {
@@ -8,18 +7,17 @@ namespace Ecosysteme_mono
         [STAThread]
         static void Main()
         {
-            EtreVivant test = new EtreVivant(3, 3, 3, 3, 3, 3);
-            EtreVivant test2 = new EtreVivant(9, 9, 9, 9, 3, 9);
-            EtreVivant test3 = new EtreVivant(1, 1, 1, 1, 1, 1);
-            List<EtreVivant> l = new List<EtreVivant>();
-            for (int i = 0; i < 22; i++)
-            {
-                l.Add(new EtreVivant(i, i, 1, 1, 1, 1));
-            }
-            l.Add(test);
-            l.Add(test2);
-            l.Add(test3);
-            plateau plat = new plateau(250, 150, l);
+
+            Plateau plat = new Plateau(250, 130);
+            Factory factory = new Factory(plat);
+
+
+
+            factory.CreateBuisson(205, 80);
+            factory.CreateDechetOrga(201, 111);
+            factory.CreateGiraffe(205, 115);
+            //factory.CreateDino(10, 50);
+            //factory.CreateMastodonte(50, 50);
             var game = new Game1(plat);
             game.Run();
         }
