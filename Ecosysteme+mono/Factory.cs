@@ -5,10 +5,10 @@ namespace Ecosysteme_mono
 {
     class Factory
     {
-        Random rnd;
-        Plateau plateau;
-        int hp, ep, epLossSpeed, speed, periodeGestation, rayonContact, rayonVision, rayonRacine, rayonSemis, damage;
-        string type, espece, sex;
+        private readonly Random rnd;
+        private readonly Plateau plateau;
+        private int hp, ep, epLossSpeed, speed, periodeGestation, rayonContact, rayonVision, rayonRacine, rayonSemis, damage;
+        private string type, espece, sex;
 
         public Factory(Plateau plateau)
         {
