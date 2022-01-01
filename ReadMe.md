@@ -22,5 +22,5 @@ Le principe de responsabilité unique est respecté dans la classe *Factory* . C
 
 > Objects or entities should be open for extension , but closed for modification.
 
-La classe abstraite *EtreVivant* respecte bien ce principe, il lui est en effet facile d'ajouter un type d'etre vivant en créant une nouvelle classe (open) mais celle-ci ne procure aucun changement sur les autres classes déjà presentes. (close) 
+La classe abstraite *EtreVivant* respecte bien ce principe, il lui est en effet facile d'ajouter un type d'etre vivant en créant une nouvelle classe qui en herite (open) mais celle-ci ne procure aucun changement sur les autres classes déjà presentes. (close) 
 
