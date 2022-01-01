@@ -4,7 +4,7 @@
 ## UML Diagrams
 
 ### Class diagram
-![class diagram](/diagramme_png/Class.png)
+![class diagram](/diagramme_png/Classs.png)
 ### Sequence diagram
 ![Sequence diagram](/diagramme_png/Sequence.png)
 
