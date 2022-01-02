@@ -9,7 +9,7 @@ namespace Ecosysteme_mono
         {
             maxEp = ep;
             this.hp = hp;
-            this.ep = (int)(ep*0.5);
+            this.ep = (int)(ep*1);
             this.epLossSpeed = epLossSpeed;
             maxHp = hp;
             
