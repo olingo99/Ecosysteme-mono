@@ -7,6 +7,10 @@
 ### Class diagram
 ![class diagram](/diagramme_png/Classs.png)
 ### Sequence diagram
+#### Diagramme de Sequence de GetPlay lorsque l'etre vivant est une plante
+![Sequence diagram](/diagramme_png/SeqDiaPlante.jpg)
+
+#### to modify , sequence diagram of drawing animal
 ![Sequence diagram](/diagramme_png/Sequence.png)
 
 ## SOLID principles justification
@@ -22,5 +26,5 @@ Le principe de responsabilité unique est respecté dans la classe *Factory* . C
 
 > Objects or entities should be open for extension , but closed for modification.
 
-La classe abstraite *EtreVivant* respecte bien ce principe, il lui est en effet facile d'ajouter un type d'etre vivant en créant une nouvelle classe qui en herite (open) mais celle-ci ne procure aucun changement sur les autres classes déjà presentes. (close) 
+La classe abstraite *EtreVivant* respecte bien ce principe, il lui est en effet facile d'ajouter un type d'etre vivant en créant une nouvelle classe qui en herite (open). L'ajout de cette nouvele classe n'implique pas de modification de code dans celles déjà existantes et n'influe pas non plus leur fonctionnement (close). 
 
