@@ -23,6 +23,7 @@ namespace Ecosysteme_mono
             factory.CreateGiraffe(199, 115);
             factory.CreateGiraffe(190, 115);
             factory.CreateDino(10, 50);
+            factory.CreateGiraffe(10, 51);
             factory.CreateDino(30, 40);
             factory.CreateDino(1, 40);
 
