@@ -81,8 +81,9 @@ namespace Ecosysteme_mono
             {
                 tempsRestantNaissance--;
             }
+
             EndTurn(matrix);
-            Random rnd = new Random();
+
             if (counter>=20)
             {
                 counter = 0;
