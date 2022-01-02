@@ -14,9 +14,18 @@ namespace Ecosysteme_mono
 
 
             factory.CreateBuisson(205, 80);
+            factory.CreateBuisson(150, 110);
+            factory.CreateBuisson(20, 80);
             factory.CreateDechetOrga(201, 111);
+            factory.CreateDechetOrga(150, 111);
+            factory.CreateDechetOrga(180, 111);
             factory.CreateGiraffe(205, 115);
-            //factory.CreateDino(10, 50);
+            factory.CreateGiraffe(199, 115);
+            factory.CreateGiraffe(190, 115);
+            factory.CreateDino(10, 50);
+            factory.CreateDino(30, 40);
+            factory.CreateDino(1, 40);
+
             //factory.CreateMastodonte(50, 50);
             var game = new Game1(plat);
             game.Run();
