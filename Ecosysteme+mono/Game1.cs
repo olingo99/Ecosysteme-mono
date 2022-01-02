@@ -116,9 +116,7 @@ namespace Ecosysteme_mono
 
             ToDrawAnimal.ForEach(etre => {
                 _spriteBatch.Draw(TexturesDict[etre.GetTexture()], new Vector2(etre.GetPos(0) * 10, etre.GetPos(1) * 10), Color.White);
-                int t = etre.GetCurrentHp()-1;
-                int b = etre.GetMaxHp();
-                double test =((double)t/b);
+
                 _spriteBatch.Draw(HealthBar, new Rectangle(etre.GetPos(0) * 10, TexturesDict[etre.GetTexture()].Height+etre.GetPos(1) * 10, (int)(TexturesDict[etre.GetTexture()].Width* ((double)etre.GetCurrentHp()/etre.GetMaxHp())), 5), Color.Red);
                 
                 _spriteBatch.Draw(EnergyBar, new Rectangle(etre.GetPos(0) * 10, TexturesDict[etre.GetTexture()].Height + 5 + etre.GetPos(1) * 10, (int)(TexturesDict[etre.GetTexture()].Width * ((double)etre.GetCurrentEp() / etre.GetMaxEp())), 5), Color.Yellow);
