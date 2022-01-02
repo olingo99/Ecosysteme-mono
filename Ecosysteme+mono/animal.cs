@@ -158,14 +158,28 @@ namespace Ecosysteme_mono
                             }
                         }
                     }
-                    else if ((matrix[i,j] is Plante && type == "herbivore")||(matrix[i, j] is Animal && type == "carnivore" && matrix[i, j]!=this))
+                    else if (matrix[i, j] is Plante && type == "herbivore")
                     {
-                        EtreVivant Etre = (EtreVivant) matrix[i, j];
+
+                        EtreVivant Etre = (EtreVivant)matrix[i, j];
                         double distance = Math.Sqrt((Math.Pow(Etre.GetPos(0) - posX, 2) + Math.Pow(Etre.GetPos(1) - posY, 2)));
                         if (distance <= rayonVision && distance < smallestDistanceTarget)
                         {
                             target = Etre;
                             smallestDistanceTarget = distance;
+                        }
+                    }
+                    else if (matrix[i, j] is Animal && type == "carnivore" && matrix[i, j] != this)
+                    {
+                        Animal animal = (Animal)matrix[i, j];
+                        if (animal.GetEspece() != espece)
+                        {
+                            double distance = Math.Sqrt((Math.Pow(animal.GetPos(0) - posX, 2) + Math.Pow(animal.GetPos(1) - posY, 2)));
+                            if (distance <= rayonVision && distance < smallestDistanceTarget)
+                            {
+                                target = animal;
+                                smallestDistanceTarget = distance;
+                            }
                         }
                     }
                 }

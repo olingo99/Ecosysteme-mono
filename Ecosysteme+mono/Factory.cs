@@ -26,7 +26,7 @@ namespace Ecosysteme_mono
             damage = 25;
             hp = RandomAround(100, 15);
             ep = RandomAround(100, 15);
-            epLossSpeed = RandomAround(2, 0);
+            epLossSpeed = RandomAround(1, 0);
             speed = RandomAround(5, 1);
             periodeGestation = RandomAround(20, 5);
             rayonContact = RandomAround(6, 1);
