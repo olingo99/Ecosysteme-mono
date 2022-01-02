@@ -8,7 +8,7 @@
 ![class diagram](/diagramme_png/Classs.png)
 ### Sequence diagram
 #### Diagramme de Sequence de GetPlay lorsque l'etre vivant est une plante
-![Sequence diagram](/diagramme_png/SeqDiaPlante.jpg)
+![Sequence diagram](/diagramme_png/SeqDiaPlante2.png)
 
 #### to modify , sequence diagram of drawing animal
 ![Sequence diagram](/diagramme_png/Sequence.png)
